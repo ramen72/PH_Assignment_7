@@ -1,5 +1,4 @@
 "use client";
-import Logo from "@/assets/svg/Logo";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
 import { useGetMe, useLogout } from "@/hooks";
@@ -7,8 +6,10 @@ import type { UserRole } from "@/types";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
+  const router = useRouter();
   const routes = [
     { id: 1, name: "Home", url: "/" },
     {
@@ -42,6 +43,7 @@ const Header = () => {
           type: "success",
         });
         queryClient.removeQueries({ queryKey: ["user"] });
+        router.replace("/");
       },
       onError: (error) => {
         toast.add({

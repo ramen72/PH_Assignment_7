@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getMe,
   googleOAuth,
@@ -27,8 +27,14 @@ export const useLogin = () => {
 };
 
 export const useLogout = () => {
+   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: userLogout,
+    onSuccess: () => {
+      queryClient.removeQueries({
+        queryKey: ["user"],
+      });
+    },
   });
 };
 
