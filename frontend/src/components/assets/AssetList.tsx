@@ -11,10 +11,8 @@ import useDebounce from "@/hooks/debounce.hook";
 import AssetsTable from "./AssetTable";
 
 const AssetList = () => {
-  // --------------------------------------------------
+  
   // API DATA
-  // --------------------------------------------------
-
   const { data, isLoading, isError } = useGetAllAssets();
 
   /**
@@ -28,46 +26,28 @@ const AssetList = () => {
    */
   const assets: Asset[] = data?.data ?? [];
 
-  // --------------------------------------------------
+  
   // FILTER STATES
-  // --------------------------------------------------
-
   const [searchTerm, setSearchTerm] = useState("");
-
   const [categoryId, setCategoryId] = useState("all");
-
   const [vendorId, setVendorId] = useState("all");
-
   const [status, setStatus] = useState("all");
-
   const [condition, setCondition] = useState("all");
-
   const [location, setLocation] = useState("all");
-
-  // --------------------------------------------------
+  
   // SORT STATES
-  // --------------------------------------------------
-
   const [sortBy, setSortBy] = useState<SortField>("createdAt");
-
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-
-  // --------------------------------------------------
-  // PAGINATION
-  // --------------------------------------------------
+  
+  // PAGINATION  
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // --------------------------------------------------
+  
   // DEBOUNCED SEARCH
-  // --------------------------------------------------
-
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
-
-  // --------------------------------------------------
+  
   // DYNAMIC FILTER OPTIONS
-  // --------------------------------------------------
-
   /**
    * These options are generated from the API data.
    *
@@ -135,18 +115,16 @@ const AssetList = () => {
     };
   }, [assets]);
 
-  // --------------------------------------------------
+  
   // FILTER + SEARCH
-  // --------------------------------------------------
+  
 
   const filteredAssets = useMemo(() => {
     const search = debouncedSearchTerm.trim().toLowerCase();
 
     return assets.filter((asset) => {
-      // ----------------------------------------------
+      
       // SEARCH
-      // ----------------------------------------------
-
       const matchesSearch =
         !search ||
         asset.name?.toLowerCase().includes(search) ||
@@ -158,38 +136,24 @@ const AssetList = () => {
         asset.vendor?.name?.toLowerCase().includes(search) ||
         asset.location?.toLowerCase().includes(search);
 
-      // ----------------------------------------------
+      
       // CATEGORY
-      // ----------------------------------------------
-
       const matchesCategory =
         categoryId === "all" || asset.categoryId === categoryId;
 
-      // ----------------------------------------------
+      
       // VENDOR
-      // ----------------------------------------------
-
       const matchesVendor = vendorId === "all" || asset.vendorId === vendorId;
-
-      // ----------------------------------------------
+      
       // STATUS
-      // ----------------------------------------------
-
       const matchesStatus = status === "all" || asset.status === status;
-
-      // ----------------------------------------------
+      
       // CONDITION
-      // ----------------------------------------------
-
       const matchesCondition =
         condition === "all" || asset.condition === condition;
-
-      // ----------------------------------------------
+      
       // LOCATION
-      // ----------------------------------------------
-
       const matchesLocation = location === "all" || asset.location === location;
-
       return (
         matchesSearch &&
         matchesCategory &&
@@ -209,10 +173,8 @@ const AssetList = () => {
     location,
   ]);
 
-  // --------------------------------------------------
+  
   // SORT
-  // --------------------------------------------------
-
   const sortedAssets = useMemo(() => {
     const result = [...filteredAssets];
 
@@ -270,10 +232,8 @@ const AssetList = () => {
     return result;
   }, [filteredAssets, sortBy, sortOrder]);
 
-  // --------------------------------------------------
+  
   // RESET PAGE WHEN FILTER CHANGES
-  // --------------------------------------------------
-
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
     setCurrentPage(1);
@@ -312,10 +272,8 @@ const AssetList = () => {
     setCurrentPage(1);
   };
 
-  // --------------------------------------------------
+  
   // RESET FILTERS
-  // --------------------------------------------------
-
   const handleResetFilters = () => {
     setSearchTerm("");
     setCategoryId("all");
@@ -330,10 +288,8 @@ const AssetList = () => {
     setCurrentPage(1);
   };
 
-  // --------------------------------------------------
+  
   // PAGINATION
-  // --------------------------------------------------
-
   const totalItems = sortedAssets.length;
   console.log(totalItems)
 
@@ -345,29 +301,20 @@ console.log(totalPages)
    */
   const safeCurrentPage =
     totalPages > 0 ? Math.min(currentPage, totalPages) : 1;
-
   const startIndex = (safeCurrentPage - 1) * itemsPerPage;
-
   const endIndex = startIndex + itemsPerPage;
-
   const paginatedAssets = sortedAssets.slice(startIndex, endIndex);
-
-  // --------------------------------------------------
+  
   // PAGINATION HANDLERS
-  // --------------------------------------------------
-
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) {
       return;
     }
-
     setCurrentPage(page);
   };
 
-  // --------------------------------------------------
+  
   // SORT HANDLER
-  // --------------------------------------------------
-
   //   const handleSortChange = (value: string) => {
   //     /**
   //      * If clicking the same sort field,
@@ -404,10 +351,8 @@ console.log(totalPages)
     setCurrentPage(1);
   };
 
-  // --------------------------------------------------
+  
   // LOADING
-  // --------------------------------------------------
-
   if (isLoading) {
     return (
       <div className="flex min-h-100 items-center justify-center">
@@ -415,11 +360,8 @@ console.log(totalPages)
       </div>
     );
   }
-
-  // --------------------------------------------------
+  
   // ERROR
-  // --------------------------------------------------
-
   if (isError) {
     return (
       <div className="flex min-h-100 items-center justify-center">
@@ -430,28 +372,19 @@ console.log(totalPages)
     );
   }
 
-  // --------------------------------------------------
-  // UI
-  // --------------------------------------------------
-
+    // UI
   return (
     <div className="space-y-5">
-      {/* -------------------------------------------- */}
+      
       {/* HEADER */}
-      {/* -------------------------------------------- */}
-
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight">Assets</h1>
-
         <p className="text-sm text-muted-foreground">
           Manage, search and filter all company assets.
         </p>
       </div>
-
-      {/* -------------------------------------------- */}
+      
       {/* FILTERS */}
-      {/* -------------------------------------------- */}
-
       <AssetFilters
         assets={assets}
         searchTerm={searchTerm}
@@ -473,10 +406,8 @@ console.log(totalPages)
         onReset={handleResetFilters}
       />
 
-      {/* -------------------------------------------- */}
+      
       {/* TABLE */}
-      {/* -------------------------------------------- */}
-
       <AssetsTable
         assets={paginatedAssets}
         totalItems={totalItems}
