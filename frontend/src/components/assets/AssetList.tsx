@@ -10,10 +10,7 @@ import AssetFilters from "./AssetFilters";
 import useDebounce from "@/hooks/debounce.hook";
 import AssetsTable from "./AssetTable";
 
-// const itemsPerPage = 10;
-
 const AssetList = () => {
-    const [itemsPerPage, setItemsPerPage] = useState(10);
   // --------------------------------------------------
   // API DATA
   // --------------------------------------------------
@@ -58,7 +55,7 @@ const AssetList = () => {
   // --------------------------------------------------
   // PAGINATION
   // --------------------------------------------------
-
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
   // --------------------------------------------------
@@ -306,6 +303,14 @@ const AssetList = () => {
     setLocation(value);
     setCurrentPage(1);
   };
+  const handleSortByChange = (value: string) => {
+    setSortBy(value as SortField);
+    setCurrentPage(1);
+  };
+  const handleSortOrderChange = (value: "asc" | "desc") => {
+    setSortOrder(value);
+    setCurrentPage(1);
+  };
 
   // --------------------------------------------------
   // RESET FILTERS
@@ -330,9 +335,10 @@ const AssetList = () => {
   // --------------------------------------------------
 
   const totalItems = sortedAssets.length;
+  console.log(totalItems)
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-
+console.log(totalPages)
   /**
    * Make sure current page never becomes invalid
    * after filtering.
@@ -462,6 +468,8 @@ const AssetList = () => {
         onStatusChange={handleStatusChange}
         onConditionChange={handleConditionChange}
         onLocationChange={handleLocationChange}
+        onSortByChange={handleSortByChange}
+        onSortOrderChange={handleSortOrderChange}
         onReset={handleResetFilters}
       />
 
