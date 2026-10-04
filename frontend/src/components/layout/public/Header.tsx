@@ -65,6 +65,7 @@ const Header = () => {
             alt="Logo"
             width={60}
             height={60}
+            loading="eager"
           />
         </Link>
 

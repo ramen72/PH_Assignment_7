@@ -14,7 +14,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import type { UserRole } from "@/types";
-import { adminRoutes, employeeRoutes, managerRoutes, } from "@/routes";
+import { adminRoutes, employeeRoutes, managerRoutes } from "@/routes";
 import type { SidebarItems } from "@/types/sidebar.type";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -30,8 +30,6 @@ const sidebarRoutes: Partial<Record<UserRole, SidebarItems>> = {
 export function DashboardSidebar({ role }: { role: UserRole }) {
   const pathname = usePathname();
   const routes: SidebarItems = sidebarRoutes[role] || [];
-
-  console.log(pathname);
 
   return (
     <Sidebar>
