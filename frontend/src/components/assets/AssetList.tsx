@@ -13,8 +13,12 @@ import AssetsTable from "./AssetTable";
 const AssetList = () => {
   
   // API DATA
-  const { data, isLoading, isError } = useGetAllAssets();
+  const { data, isLoading, isError } = useGetAllAssets({
+    page:1,
+    limit:10
+  });
 
+  console.log(data)
   /**
    * Adjust this according to your API response.
    *
@@ -40,7 +44,7 @@ const AssetList = () => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   
   // PAGINATION  
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(1);
 
   
@@ -133,9 +137,12 @@ const AssetList = () => {
         asset.model?.toLowerCase().includes(search) ||
         asset.serialNumber?.toLowerCase().includes(search) ||
         asset.category?.name?.toLowerCase().includes(search) ||
+        asset.condition.toLowerCase().includes(search) ||
+        asset.description?.toLowerCase().includes(search) ||
         asset.vendor?.name?.toLowerCase().includes(search) ||
         asset.location?.toLowerCase().includes(search);
 
+        console.log(matchesSearch)
       
       // CATEGORY
       const matchesCategory =
@@ -271,6 +278,14 @@ const AssetList = () => {
     setSortOrder(value);
     setCurrentPage(1);
   };
+    // Items per page change
+  const handleItemsPerPageChange = (value: string) => {
+    const newItemsPerPage = Number(value);
+    setItemsPerPage(newItemsPerPage);
+
+    // Reset to first page
+    setCurrentPage(1);
+  };
 
   
   // RESET FILTERS
@@ -291,10 +306,8 @@ const AssetList = () => {
   
   // PAGINATION
   const totalItems = sortedAssets.length;
-  console.log(totalItems)
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-console.log(totalPages)
   /**
    * Make sure current page never becomes invalid
    * after filtering.
@@ -418,6 +431,7 @@ console.log(totalPages)
         sortOrder={sortOrder}
         onPageChange={handlePageChange}
         onSort={handleSortChange}
+        handleItemsPerPageChange={handleItemsPerPageChange}
       />
     </div>
   );

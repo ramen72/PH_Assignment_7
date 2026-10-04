@@ -36,6 +36,15 @@ import {
 } from "@/components/ui/table";
 
 import type { Asset } from "@/types";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Field, FieldLabel } from "../ui/field";
 
 type SortField =
   | "assetTag"
@@ -58,6 +67,7 @@ interface AssetTableProps {
 
   onPageChange: (page: number) => void;
   onSort: (field: SortField) => void;
+  handleItemsPerPageChange: (field: SortField) => void;
 }
 
 const AssetsTable = ({
@@ -70,6 +80,7 @@ const AssetsTable = ({
   sortOrder,
   onPageChange,
   onSort,
+  handleItemsPerPageChange
 }: AssetTableProps) => {
   // --------------------------------------------------
   // SORT ICON
@@ -77,9 +88,7 @@ const AssetsTable = ({
 
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortBy !== field) {
-      return (
-        <ChevronsUpDown className="ml-1 h-3.5 w-3.5 opacity-40" />
-      );
+      return <ChevronsUpDown className="ml-1 h-3.5 w-3.5 opacity-40" />;
     }
 
     return sortOrder === "asc" ? (
@@ -118,10 +127,7 @@ const AssetsTable = ({
       );
     }
 
-    if (
-      normalized === "maintenance" ||
-      normalized === "under_maintenance"
-    ) {
+    if (normalized === "maintenance" || normalized === "under_maintenance") {
       return (
         <Badge
           variant="outline"
@@ -132,10 +138,7 @@ const AssetsTable = ({
       );
     }
 
-    if (
-      normalized === "retired" ||
-      normalized === "disposed"
-    ) {
+    if (normalized === "retired" || normalized === "disposed") {
       return (
         <Badge
           variant="outline"
@@ -146,11 +149,7 @@ const AssetsTable = ({
       );
     }
 
-    return (
-      <Badge variant="outline">
-        {status.replaceAll("_", " ")}
-      </Badge>
-    );
+    return <Badge variant="outline">{status.replaceAll("_", " ")}</Badge>;
   };
 
   const getConditionBadge = (condition: string) => {
@@ -226,13 +225,9 @@ const AssetsTable = ({
   // PAGINATION INFO
   // --------------------------------------------------
 
-  const startIndex =
-    (currentPage - 1) * itemsPerPage;
+  const startIndex = (currentPage - 1) * itemsPerPage;
 
-  const endIndex = Math.min(
-    startIndex + assets.length,
-    totalItems,
-  );
+  const endIndex = Math.min(startIndex + assets.length, totalItems);
 
   // --------------------------------------------------
   // UI
@@ -240,20 +235,15 @@ const AssetsTable = ({
 
   return (
     <div className="space-y-4">
-
       {/* SUMMARY */}
 
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">
-            Assets
-          </h2>
+          <h2 className="text-lg font-semibold">Assets</h2>
 
           <p className="text-sm text-muted-foreground">
             Showing{" "}
-            <span className="font-medium text-foreground">
-              {totalItems}
-            </span>{" "}
+            <span className="font-medium text-foreground">{totalItems}</span>{" "}
             {totalItems === 1 ? "asset" : "assets"}
           </p>
         </div>
@@ -263,12 +253,9 @@ const AssetsTable = ({
 
       <div className="overflow-hidden rounded-xl border bg-background shadow-sm">
         <div className="overflow-x-auto">
-
           <Table>
-
             <TableHeader>
               <TableRow className="bg-muted/40">
-
                 <TableHead className="min-w-[220px]">
                   <button
                     type="button"
@@ -291,9 +278,7 @@ const AssetsTable = ({
                   </button>
                 </TableHead>
 
-                <TableHead className="min-w-[130px]">
-                  Category
-                </TableHead>
+                <TableHead className="min-w-[130px]">Category</TableHead>
 
                 <TableHead className="min-w-[190px]">
                   <button
@@ -306,21 +291,13 @@ const AssetsTable = ({
                   </button>
                 </TableHead>
 
-                <TableHead className="min-w-[150px]">
-                  Serial Number
-                </TableHead>
+                <TableHead className="min-w-[150px]">Serial Number</TableHead>
 
-                <TableHead>
-                  Status
-                </TableHead>
+                <TableHead>Status</TableHead>
 
-                <TableHead>
-                  Condition
-                </TableHead>
+                <TableHead>Condition</TableHead>
 
-                <TableHead>
-                  Location
-                </TableHead>
+                <TableHead>Location</TableHead>
 
                 <TableHead className="text-right">
                   <button
@@ -345,26 +322,21 @@ const AssetsTable = ({
                 </TableHead>
 
                 <TableHead className="w-[60px]" />
-
               </TableRow>
             </TableHeader>
 
             <TableBody>
-
               {assets.length > 0 ? (
                 assets.map((asset) => (
                   <TableRow
                     key={asset.id}
                     className="group transition-colors hover:bg-muted/30"
                   >
-
                     {/* ASSET */}
 
                     <TableCell>
                       <div className="flex items-center gap-3">
-
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border bg-muted">
-
                           {asset.imageUrl ? (
                             <Image
                               src={asset.imageUrl}
@@ -376,25 +348,18 @@ const AssetsTable = ({
                             />
                           ) : (
                             <span className="text-xs font-semibold text-muted-foreground">
-                              {asset.name
-                                ?.slice(0, 2)
-                                .toUpperCase()}
+                              {asset.name?.slice(0, 2).toUpperCase()}
                             </span>
                           )}
-
                         </div>
 
                         <div className="min-w-0">
-                          <p className="truncate font-medium">
-                            {asset.name}
-                          </p>
+                          <p className="truncate font-medium">{asset.name}</p>
 
                           <p className="truncate text-xs text-muted-foreground">
-                            {asset.description ||
-                              "No description"}
+                            {asset.description || "No description"}
                           </p>
                         </div>
-
                       </div>
                     </TableCell>
 
@@ -408,16 +373,12 @@ const AssetsTable = ({
 
                     {/* CATEGORY */}
 
-                    <TableCell>
-                      {asset.category?.name || "—"}
-                    </TableCell>
+                    <TableCell>{asset.category?.name || "—"}</TableCell>
 
                     {/* BRAND / MODEL */}
 
                     <TableCell>
-                      <p className="font-medium">
-                        {asset.brand || "—"}
-                      </p>
+                      <p className="font-medium">{asset.brand || "—"}</p>
 
                       <p className="text-xs text-muted-foreground">
                         {asset.model || "—"}
@@ -434,21 +395,15 @@ const AssetsTable = ({
 
                     {/* STATUS */}
 
-                    <TableCell>
-                      {getStatusBadge(asset.status)}
-                    </TableCell>
+                    <TableCell>{getStatusBadge(asset.status)}</TableCell>
 
                     {/* CONDITION */}
 
-                    <TableCell>
-                      {getConditionBadge(asset.condition)}
-                    </TableCell>
+                    <TableCell>{getConditionBadge(asset.condition)}</TableCell>
 
                     {/* LOCATION */}
 
-                    <TableCell>
-                      {asset.location || "—"}
-                    </TableCell>
+                    <TableCell>{asset.location || "—"}</TableCell>
 
                     {/* PRICE */}
 
@@ -460,16 +415,12 @@ const AssetsTable = ({
 
                     {/* DATE */}
 
-                    <TableCell>
-                      {formatDate(asset.purchaseDate)}
-                    </TableCell>
+                    <TableCell>{formatDate(asset.purchaseDate)}</TableCell>
 
                     {/* ACTION */}
 
                     <TableCell>
-
                       <DropdownMenu>
-
                         {/* <DropdownMenuTrigger asChild>
                           <Button
                             variant="ghost"
@@ -479,14 +430,10 @@ const AssetsTable = ({
                           </Button>
                         </DropdownMenuTrigger> */}
                         <DropdownMenuTrigger>
-                            <MoreHorizontal className="h-4 w-4" />
+                          <MoreHorizontal className="h-4 w-4" />
                         </DropdownMenuTrigger>
 
-                        <DropdownMenuContent
-                          align="end"
-                          className="w-40"
-                        >
-
+                        <DropdownMenuContent align="end" className="w-40">
                           <DropdownMenuItem>
                             <Eye className="mr-2 h-4 w-4" />
                             View
@@ -503,44 +450,30 @@ const AssetsTable = ({
                             <Trash2 className="mr-2 h-4 w-4" />
                             Delete
                           </DropdownMenuItem>
-
                         </DropdownMenuContent>
-
                       </DropdownMenu>
-
                     </TableCell>
-
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell
-                    colSpan={11}
-                    className="h-48 text-center"
-                  >
+                  <TableCell colSpan={11} className="h-48 text-center">
                     <div className="flex flex-col items-center justify-center gap-2">
-
                       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
                         <Search className="h-5 w-5 text-muted-foreground" />
                       </div>
 
-                      <p className="font-medium">
-                        No assets found
-                      </p>
+                      <p className="font-medium">No assets found</p>
 
                       <p className="text-sm text-muted-foreground">
                         Try changing your search or filter criteria.
                       </p>
-
                     </div>
                   </TableCell>
                 </TableRow>
               )}
-
             </TableBody>
-
           </Table>
-
         </div>
       </div>
 
@@ -548,105 +481,98 @@ const AssetsTable = ({
 
       {totalItems > 0 && (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-
           <p className="text-sm text-muted-foreground">
             Showing{" "}
             <span className="font-medium text-foreground">
               {startIndex + 1}
             </span>{" "}
-            to{" "}
-            <span className="font-medium text-foreground">
-              {endIndex}
-            </span>{" "}
-            of{" "}
-            <span className="font-medium text-foreground">
-              {totalItems}
-            </span>
+            to <span className="font-medium text-foreground">{endIndex}</span>{" "}
+            of <span className="font-medium text-foreground">{totalItems}</span>
           </p>
 
-          <div className="flex items-center gap-1">
+          <div className="flex justify-end items-center gap-x-5">
+            <div>
+              <Field orientation="horizontal" className="w-fit">
+                <FieldLabel htmlFor="select-rows-per-page">
+                  Rows per page
+                </FieldLabel>
 
-            <Button
-              variant="outline"
-              size="icon"
-              disabled={currentPage === 1}
-              onClick={() =>
-                onPageChange(currentPage - 1)
-              }
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
+                <Select
+                  value={String(itemsPerPage)}
+                  onValueChange={handleItemsPerPageChange}
+                >
+                  <SelectTrigger className="w-20" id="select-rows-per-page">
+                    <SelectValue />
+                  </SelectTrigger>
 
-            {Array.from(
-              { length: totalPages },
-              (_, index) => index + 1,
-            )
-              .filter((page) => {
-                if (totalPages <= 5) return true;
+                  <SelectContent align="start">
+                    <SelectGroup>
+                      <SelectItem value="1">1</SelectItem>
+                      <SelectItem value="3">3</SelectItem>
+                      <SelectItem value="5">5</SelectItem>
+                      <SelectItem value="10">10</SelectItem>
+                      <SelectItem value="25">25</SelectItem>
+                      <SelectItem value="50">50</SelectItem>
+                      <SelectItem value="100">100</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+            </div>
+            <div className="flex items-center gap-1">
+              <Button
+                variant="outline"
+                size="icon"
+                disabled={currentPage === 1}
+                onClick={() => onPageChange(currentPage - 1)}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
 
-                return (
-                  page === 1 ||
-                  page === totalPages ||
-                  Math.abs(page - currentPage) <= 1
-                );
-              })
-              .map((page, index, pages) => {
+              {Array.from({ length: totalPages }, (_, index) => index + 1)
+                .filter((page) => {
+                  if (totalPages <= 5) return true;
 
-                const previousPage =
-                  pages[index - 1];
+                  return (
+                    page === 1 ||
+                    page === totalPages ||
+                    Math.abs(page - currentPage) <= 1
+                  );
+                })
+                .map((page, index, pages) => {
+                  const previousPage = pages[index - 1];
 
-                const showEllipsis =
-                  previousPage &&
-                  page - previousPage > 1;
+                  const showEllipsis = previousPage && page - previousPage > 1;
 
-                return (
-                  <div
-                    key={page}
-                    className="flex items-center gap-1"
-                  >
+                  return (
+                    <div key={page} className="flex items-center gap-1">
+                      {showEllipsis && (
+                        <span className="px-1 text-muted-foreground">...</span>
+                      )}
 
-                    {showEllipsis && (
-                      <span className="px-1 text-muted-foreground">
-                        ...
-                      </span>
-                    )}
+                      <Button
+                        variant={currentPage === page ? "default" : "outline"}
+                        size="icon"
+                        onClick={() => onPageChange(page)}
+                      >
+                        {page}
+                      </Button>
+                    </div>
+                  );
+                })}
 
-                    <Button
-                      variant={
-                        currentPage === page
-                          ? "default"
-                          : "outline"
-                      }
-                      size="icon"
-                      onClick={() =>
-                        onPageChange(page)
-                      }
-                    >
-                      {page}
-                    </Button>
-
-                  </div>
-                );
-              })}
-
-            <Button
-              variant="outline"
-              size="icon"
-              disabled={
-                currentPage === totalPages
-              }
-              onClick={() =>
-                onPageChange(currentPage + 1)
-              }
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-
+              <Button
+                variant="outline"
+                size="icon"
+                disabled={currentPage === totalPages}
+                onClick={() => onPageChange(currentPage + 1)}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
-
         </div>
       )}
-
     </div>
   );
 };
