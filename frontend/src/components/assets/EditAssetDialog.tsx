@@ -54,12 +54,14 @@ const EditAssetDialog = ({
   const [purchaseDate, setPurchaseDate] = useState("");
   const [warrantyExpiry, setWarrantyExpiry] = useState("");
 
+//   if(!assetId) return;
+
   // GET SINGLE ASSET
   const {
     data,
     isLoading: isAssetLoading,
     isError: isAssetError,
-  } = useGetAssetById(assetId);
+  } = useGetAssetById(assetId!);
 
   // UPDATE
   const updateAssetMutation = useUpdateAsset();
@@ -304,7 +306,11 @@ const EditAssetDialog = ({
 
                 <Select
                   value={status}
-                  onValueChange={setStatus}
+                  onValueChange={(value) => {
+                    if (value !== null) {
+                    setStatus(value);
+                    }
+                }}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select status" />
@@ -342,7 +348,11 @@ const EditAssetDialog = ({
 
                 <Select
                   value={condition}
-                  onValueChange={setCondition}
+                  onValueChange={(value) => {
+                        if (value !== null) {
+                        setCondition(value);
+                        }
+                    }}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select condition" />
