@@ -22,6 +22,7 @@ const AssetList = () => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [selectedItemId, setSelectedItemId] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const { data, isLoading, isError } = useGetAllAssets({
@@ -88,10 +89,14 @@ const AssetList = () => {
     setCurrentPage(1);
   };
   // Items per page change
-  const handleItemsPerPageChange = (value: string) => {
+  const handleItemsPerPageChange = (value: string | null) => {
+    if(!value) return
     setItemsPerPage(Number(value));
     setCurrentPage(1);
   };
+  const handleViewAsset= (asset:Asset)=>{
+    setSelectedItemId(asset.id)
+  }
 
   // RESET FILTERS
   const handleResetFilters = () => {
@@ -192,6 +197,7 @@ const AssetList = () => {
         onPageChange={handlePageChange}
         onSort={handleSortChange}
         handleItemsPerPageChange={handleItemsPerPageChange}
+        handleViewAsset={handleViewAsset}
       />
     </div>
   );

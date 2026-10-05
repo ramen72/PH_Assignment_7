@@ -67,7 +67,8 @@ interface AssetTableProps {
 
   onPageChange: (page: number) => void;
   onSort: (field: SortField) => void;
-  handleItemsPerPageChange: (field: SortField) => void;
+  handleItemsPerPageChange: (field: string | null) => void;
+  handleViewAsset: (field: Asset) => void;
 }
 
 const AssetsTable = ({
@@ -81,8 +82,8 @@ const AssetsTable = ({
   onPageChange,
   onSort,
   handleItemsPerPageChange,
+  handleViewAsset
 }: AssetTableProps) => {
-
   // SORT ICON
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortBy !== field) {
@@ -95,7 +96,6 @@ const AssetsTable = ({
       <ArrowDown className="ml-1 h-3.5 w-3.5" />
     );
   };
-
 
   // BADGE HELPERS
   const getStatusBadge = (status: string) => {
@@ -197,7 +197,6 @@ const AssetsTable = ({
     return <Badge variant="outline">{condition}</Badge>;
   };
 
-
   // FORMAT HELPERS
   const formatDate = (date: string) => {
     return new Intl.DateTimeFormat("en-GB", {
@@ -214,11 +213,9 @@ const AssetsTable = ({
     }).format(Number(price));
   };
 
-
   // PAGINATION INFO
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + assets.length, totalItems);
-
 
   // UI
   return (
@@ -229,17 +226,21 @@ const AssetsTable = ({
         <div>
           <h2 className="text-lg font-semibold">Assets</h2>
           {totalItems > 0 && (
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-muted-foreground">
-            Showing{" "}
-            <span className="font-medium text-foreground">
-              {startIndex + 1}
-            </span>{" "}
-            to <span className="font-medium text-foreground">{endIndex}</span>{" "}
-            of <span className="font-medium text-foreground">{totalItems}</span>
-          </p>
-        </div>
-      )}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-muted-foreground">
+                Showing{" "}
+                <span className="font-medium text-foreground">
+                  {startIndex + 1}
+                </span>{" "}
+                to{" "}
+                <span className="font-medium text-foreground">{endIndex}</span>{" "}
+                of{" "}
+                <span className="font-medium text-foreground">
+                  {totalItems}
+                </span>
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -403,7 +404,7 @@ const AssetsTable = ({
                         </DropdownMenuTrigger>
 
                         <DropdownMenuContent align="end" className="w-40">
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={()=>handleViewAsset(asset)}>
                             <Eye className="mr-2 h-4 w-4" />
                             View
                           </DropdownMenuItem>
