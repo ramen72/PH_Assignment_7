@@ -10,6 +10,8 @@ export interface AssetFilterParams {
   location?: string;
   page?: number;
   limit?: number;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
 }
 
 export const getAllAssets = (params?: AssetFilterParams) => {

@@ -80,7 +80,7 @@ const AssetsTable = ({
   sortOrder,
   onPageChange,
   onSort,
-  handleItemsPerPageChange
+  handleItemsPerPageChange,
 }: AssetTableProps) => {
   // --------------------------------------------------
   // SORT ICON
