@@ -13,6 +13,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   type AssetFilterParams,
+  deleteAsset,
   getAllAssets,
   getAssetById,
   updateAsset,
@@ -62,6 +63,22 @@ export const useUpdateAsset = () => {
       });
 
       // Assets list refetch
+      queryClient.invalidateQueries({
+        queryKey: ["assets"],
+      });
+    },
+  });
+};
+
+// DELETE ASSET
+export const useDeleteAsset = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (assetId: string) => deleteAsset(assetId),
+
+    onSuccess: () => {
+      // Refresh all asset queries
       queryClient.invalidateQueries({
         queryKey: ["assets"],
       });

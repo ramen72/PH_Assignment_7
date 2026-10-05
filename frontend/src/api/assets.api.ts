@@ -48,3 +48,10 @@ export const updateAsset = (
     body: JSON.stringify(payload),
   });
 };
+
+// DELETE SINGLE ASSET
+export const deleteAsset = (assetId: string) => {
+  return apiClient(`/assets/${assetId}`, {
+    method: "DELETE",
+  });
+};

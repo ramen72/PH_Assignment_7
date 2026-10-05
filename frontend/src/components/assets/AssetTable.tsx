@@ -70,6 +70,7 @@ interface AssetTableProps {
   handleItemsPerPageChange: (field: string | null) => void;
   handleViewAsset: (asset: Asset) => void;
   handleEditAsset: (asset: Asset) => void;
+  handleDeleteAsset: (asset: Asset) => void;
 }
 
 const AssetsTable = ({
@@ -84,7 +85,8 @@ const AssetsTable = ({
   onSort,
   handleItemsPerPageChange,
   handleViewAsset,
-  handleEditAsset
+  handleEditAsset,
+  handleDeleteAsset
 }: AssetTableProps) => {
   // SORT ICON
   const SortIcon = ({ field }: { field: SortField }) => {
@@ -406,7 +408,7 @@ const AssetsTable = ({
                         </DropdownMenuTrigger>
 
                         <DropdownMenuContent align="end" className="w-40">
-                          <DropdownMenuItem onClick={()=>handleViewAsset(asset)}>
+                          <DropdownMenuItem onClick={() => handleViewAsset(asset)}>
                             <Eye className="mr-2 h-4 w-4" />
                             View
                           </DropdownMenuItem>
@@ -418,7 +420,14 @@ const AssetsTable = ({
 
                           <DropdownMenuSeparator />
 
-                          <DropdownMenuItem className="text-destructive focus:text-destructive">
+                          {/* <DropdownMenuItem onClick={() => handleDeletetAsset(asset)} className="text-destructive focus:text-destructive">
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete
+                          </DropdownMenuItem> */}
+                          <DropdownMenuItem
+                            onClick={() => handleDeleteAsset(asset)}
+                            className="text-destructive focus:text-destructive"
+                          >
                             <Trash2 className="mr-2 h-4 w-4" />
                             Delete
                           </DropdownMenuItem>

@@ -3,13 +3,14 @@
 import { useMemo, useState } from "react";
 
 import type { Asset } from "@/types";
-import { useGetAllAssets } from "@/hooks";
+import { useDeleteAsset, useGetAllAssets } from "@/hooks";
 
 import AssetFilters from "./AssetFilters";
 import useDebounce from "@/hooks/debounce.hook";
 import AssetsTable from "./AssetTable";
 import AssetDetailsDialog from "./AssetDetailsDialog";
 import EditAssetDialog from "./EditAssetDialog";
+import AssetDeleteDialog from "./AssetDeleteDialog";
 
 const AssetList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,6 +29,10 @@ const AssetList = () => {
   const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+
 
   const { data, isLoading, isError } = useGetAllAssets({
     page: currentPage,
@@ -41,7 +46,9 @@ const AssetList = () => {
     sortBy,
     sortOrder,
   });
- 
+
+  const deleteAssetMutation = useDeleteAsset();
+
   const assets: Asset[] = data?.data ?? [];
 
   const totalItems = data?.meta?.total ?? 0;
@@ -94,17 +101,35 @@ const AssetList = () => {
   };
   // Items per page change
   const handleItemsPerPageChange = (value: string | null) => {
-    if(!value) return
+    if (!value) return
     setItemsPerPage(Number(value));
     setCurrentPage(1);
   };
-  const handleViewAsset= (asset:Asset)=>{
+  const handleViewAsset = (asset: Asset) => {
     setSelectedItemId(asset.id)
   }
   const handleEditAsset = (asset: Asset) => {
-  setSelectedAssetId(asset.id);
-  setEditDialogOpen(true);
-};
+    setSelectedAssetId(asset.id);
+    setEditDialogOpen(true);
+  };
+
+  const handleDeleteAsset = (asset: Asset) => {
+    setSelectedAsset(asset);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!selectedAsset?.id) {
+      return;
+    }
+
+    deleteAssetMutation.mutate(selectedAsset.id, {
+      onSuccess: () => {
+        setDeleteDialogOpen(false);
+        setSelectedAsset(null);
+      },
+    });
+  };
 
   // RESET FILTERS
   const handleResetFilters = () => {
@@ -206,8 +231,9 @@ const AssetList = () => {
         onSort={handleSortChange}
         handleItemsPerPageChange={handleItemsPerPageChange}
         handleViewAsset={handleViewAsset}
-        handleEditAsset= {handleEditAsset}
-        
+        handleEditAsset={handleEditAsset}
+        handleDeleteAsset={handleDeleteAsset}
+
       />
 
       {/* ASSET DETAILS DIALOG */}
@@ -221,10 +247,26 @@ const AssetList = () => {
         }}
       />
 
+      {/* ASSET EDIT DIALOG */}
       <EditAssetDialog
         assetId={selectedAssetId}
         open={editDialogOpen}
         onOpenChange={setEditDialogOpen}
+      />
+
+      {/* ASSET DELETE DIALOG */}
+      <AssetDeleteDialog
+        asset={selectedAsset}
+        open={deleteDialogOpen}
+        isDeleting={deleteAssetMutation.isPending}
+        onOpenChange={(open) => {
+          setDeleteDialogOpen(open);
+
+          if (!open) {
+            setSelectedAsset(null);
+          }
+        }}
+        onConfirm={handleConfirmDelete}
       />
     </div>
   );
