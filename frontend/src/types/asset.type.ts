@@ -72,3 +72,20 @@ export interface Vendor {
   createdAt: string
   updatedAt: string
 }
+
+export interface UpdateAssetPayload {
+  name?: string;
+  assetTag?: string;
+  categoryId?: string;
+  vendorId?: string;
+  brand?: string;
+  model?: string;
+  serialNumber?: string;
+  description?: string;
+  status?: string;
+  condition?: string;
+  location?: string;
+  purchasePrice?: number;
+  purchaseDate?: string;
+  warrantyExpiry?: string;
+}

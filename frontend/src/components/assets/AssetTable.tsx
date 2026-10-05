@@ -69,6 +69,7 @@ interface AssetTableProps {
   onSort: (field: SortField) => void;
   handleItemsPerPageChange: (field: string | null) => void;
   handleViewAsset: (asset: Asset) => void;
+  handleEditAsset: (asset: Asset) => void;
 }
 
 const AssetsTable = ({
@@ -82,7 +83,8 @@ const AssetsTable = ({
   onPageChange,
   onSort,
   handleItemsPerPageChange,
-  handleViewAsset
+  handleViewAsset,
+  handleEditAsset
 }: AssetTableProps) => {
   // SORT ICON
   const SortIcon = ({ field }: { field: SortField }) => {
@@ -409,7 +411,7 @@ const AssetsTable = ({
                             View
                           </DropdownMenuItem>
 
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditAsset(asset)}>
                             <Pencil className="mr-2 h-4 w-4" />
                             Edit
                           </DropdownMenuItem>

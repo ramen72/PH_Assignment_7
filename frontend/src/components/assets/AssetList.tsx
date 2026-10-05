@@ -9,6 +9,7 @@ import AssetFilters from "./AssetFilters";
 import useDebounce from "@/hooks/debounce.hook";
 import AssetsTable from "./AssetTable";
 import AssetDetailsDialog from "./AssetDetailsDialog";
+import EditAssetDialog from "./EditAssetDialog";
 
 const AssetList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,6 +25,8 @@ const AssetList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedItemId, setSelectedItemId] = useState("");
+  const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const { data, isLoading, isError } = useGetAllAssets({
@@ -98,6 +101,10 @@ const AssetList = () => {
   const handleViewAsset= (asset:Asset)=>{
     setSelectedItemId(asset.id)
   }
+  const handleEditAsset = (asset: Asset) => {
+  setSelectedAssetId(asset.id);
+  setEditDialogOpen(true);
+};
 
   // RESET FILTERS
   const handleResetFilters = () => {
@@ -199,6 +206,8 @@ const AssetList = () => {
         onSort={handleSortChange}
         handleItemsPerPageChange={handleItemsPerPageChange}
         handleViewAsset={handleViewAsset}
+        handleEditAsset= {handleEditAsset}
+        
       />
 
       {/* ASSET DETAILS DIALOG */}
@@ -210,6 +219,12 @@ const AssetList = () => {
             setSelectedItemId("");
           }
         }}
+      />
+
+      <EditAssetDialog
+        assetId={selectedAssetId}
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
       />
     </div>
   );

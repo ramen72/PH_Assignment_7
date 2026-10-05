@@ -1,4 +1,5 @@
 import apiClient from "@/lib/apiClient";
+import { UpdateAssetPayload } from "@/types";
 
 export interface AssetFilterParams {
   searchTerm?: string;
@@ -34,5 +35,16 @@ export const getAllAssets = (params?: AssetFilterParams) => {
 export const getAssetById = (assetId: string) => {
   return apiClient(`/assets/${assetId}`, {
     method: "GET",
+  });
+};
+
+// UPDATE SINGLE ASSET
+export const updateAsset = (
+  assetId: string,
+  payload: UpdateAssetPayload,
+) => {
+  return apiClient(`/assets/${assetId}`, {
+    method: "PATCH",
+    body: JSON.stringify(payload),
   });
 };

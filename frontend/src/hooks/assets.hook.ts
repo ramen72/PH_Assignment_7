@@ -9,13 +9,15 @@
 //   });
 // };
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   type AssetFilterParams,
   getAllAssets,
   getAssetById,
+  updateAsset,
 } from "@/api";
+import { UpdateAssetPayload } from "@/types";
 
 export const useGetAllAssets = (
   params?: AssetFilterParams,
@@ -37,5 +39,32 @@ export const useGetAssetById = (assetId?: string) => {
     queryFn: () => getAssetById(assetId as string),
 
     enabled: Boolean(assetId),
+  });
+};
+
+// UPDATE ASSET
+export const useUpdateAsset = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      assetId,
+      payload,
+    }: {
+      assetId: string;
+      payload: UpdateAssetPayload;
+    }) => updateAsset(assetId, payload),
+
+    onSuccess: (_, variables) => {
+      // Single asset cache update/refetch
+      queryClient.invalidateQueries({
+        queryKey: ["asset", variables.assetId],
+      });
+
+      // Assets list refetch
+      queryClient.invalidateQueries({
+        queryKey: ["assets"],
+      });
+    },
   });
 };
