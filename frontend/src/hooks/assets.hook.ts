@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   type AssetFilterParams,
   getAllAssets,
+  getAssetById,
 } from "@/api";
 
 export const useGetAllAssets = (
@@ -25,5 +26,16 @@ export const useGetAllAssets = (
     queryFn: () => getAllAssets(params),
 
     placeholderData: (previousData) => previousData,
+  });
+};
+
+// Get single asset
+export const useGetAssetById = (assetId?: string) => {
+  return useQuery({
+    queryKey: ["asset", assetId],
+
+    queryFn: () => getAssetById(assetId as string),
+
+    enabled: Boolean(assetId),
   });
 };

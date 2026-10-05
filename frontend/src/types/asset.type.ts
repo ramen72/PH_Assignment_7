@@ -26,6 +26,11 @@ export interface Asset {
   location: string;
 
   imageUrl?: string;
+  assignedTo?: {
+    id: string;
+    name: string;
+    email?: string | null;
+  } | null;
 
   createdAt: string;
   updatedAt: string;

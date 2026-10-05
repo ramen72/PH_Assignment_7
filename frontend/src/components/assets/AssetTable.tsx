@@ -68,7 +68,7 @@ interface AssetTableProps {
   onPageChange: (page: number) => void;
   onSort: (field: SortField) => void;
   handleItemsPerPageChange: (field: string | null) => void;
-  handleViewAsset: (field: Asset) => void;
+  handleViewAsset: (asset: Asset) => void;
 }
 
 const AssetsTable = ({

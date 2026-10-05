@@ -8,6 +8,7 @@ import { useGetAllAssets } from "@/hooks";
 import AssetFilters from "./AssetFilters";
 import useDebounce from "@/hooks/debounce.hook";
 import AssetsTable from "./AssetTable";
+import AssetDetailsDialog from "./AssetDetailsDialog";
 
 const AssetList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -198,6 +199,17 @@ const AssetList = () => {
         onSort={handleSortChange}
         handleItemsPerPageChange={handleItemsPerPageChange}
         handleViewAsset={handleViewAsset}
+      />
+
+      {/* ASSET DETAILS DIALOG */}
+      <AssetDetailsDialog
+        assetId={selectedItemId}
+        open={Boolean(selectedItemId)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedItemId("");
+          }
+        }}
       />
     </div>
   );

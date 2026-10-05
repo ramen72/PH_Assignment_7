@@ -29,3 +29,10 @@ export const getAllAssets = (params?: AssetFilterParams) => {
     method: "GET",
   });
 };
+
+// Get single asset
+export const getAssetById = (assetId: string) => {
+  return apiClient(`/assets/${assetId}`, {
+    method: "GET",
+  });
+};
