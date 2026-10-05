@@ -82,10 +82,8 @@ const AssetsTable = ({
   onSort,
   handleItemsPerPageChange,
 }: AssetTableProps) => {
-  // --------------------------------------------------
-  // SORT ICON
-  // --------------------------------------------------
 
+  // SORT ICON
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortBy !== field) {
       return <ChevronsUpDown className="ml-1 h-3.5 w-3.5 opacity-40" />;
@@ -98,10 +96,8 @@ const AssetsTable = ({
     );
   };
 
-  // --------------------------------------------------
-  // BADGE HELPERS
-  // --------------------------------------------------
 
+  // BADGE HELPERS
   const getStatusBadge = (status: string) => {
     const normalized = status.toLowerCase();
 
@@ -198,14 +194,11 @@ const AssetsTable = ({
         </Badge>
       );
     }
-
     return <Badge variant="outline">{condition}</Badge>;
   };
 
-  // --------------------------------------------------
-  // FORMAT HELPERS
-  // --------------------------------------------------
 
+  // FORMAT HELPERS
   const formatDate = (date: string) => {
     return new Intl.DateTimeFormat("en-GB", {
       day: "2-digit",
@@ -221,18 +214,13 @@ const AssetsTable = ({
     }).format(Number(price));
   };
 
-  // --------------------------------------------------
+
   // PAGINATION INFO
-  // --------------------------------------------------
-
   const startIndex = (currentPage - 1) * itemsPerPage;
-
   const endIndex = Math.min(startIndex + assets.length, totalItems);
 
-  // --------------------------------------------------
-  // UI
-  // --------------------------------------------------
 
+  // UI
   return (
     <div className="space-y-4">
       {/* SUMMARY */}
@@ -240,23 +228,28 @@ const AssetsTable = ({
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold">Assets</h2>
-
+          {totalItems > 0 && (
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
             Showing{" "}
-            <span className="font-medium text-foreground">{totalItems}</span>{" "}
-            {totalItems === 1 ? "asset" : "assets"}
+            <span className="font-medium text-foreground">
+              {startIndex + 1}
+            </span>{" "}
+            to <span className="font-medium text-foreground">{endIndex}</span>{" "}
+            of <span className="font-medium text-foreground">{totalItems}</span>
           </p>
+        </div>
+      )}
         </div>
       </div>
 
       {/* TABLE */}
-
       <div className="overflow-hidden rounded-xl border bg-background shadow-sm">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/40">
-                <TableHead className="min-w-[220px]">
+                <TableHead className="min-w-55">
                   <button
                     type="button"
                     onClick={() => onSort("name")}
@@ -267,7 +260,7 @@ const AssetsTable = ({
                   </button>
                 </TableHead>
 
-                <TableHead className="min-w-[130px]">
+                <TableHead className="min-w-32.5">
                   <button
                     type="button"
                     onClick={() => onSort("assetTag")}
@@ -278,9 +271,8 @@ const AssetsTable = ({
                   </button>
                 </TableHead>
 
-                <TableHead className="min-w-[130px]">Category</TableHead>
-
-                <TableHead className="min-w-[190px]">
+                <TableHead className="min-w-32.5">Category</TableHead>
+                <TableHead className="min-w-47.5">
                   <button
                     type="button"
                     onClick={() => onSort("brand")}
@@ -291,14 +283,10 @@ const AssetsTable = ({
                   </button>
                 </TableHead>
 
-                <TableHead className="min-w-[150px]">Serial Number</TableHead>
-
+                <TableHead className="min-w-37.5">Serial Number</TableHead>
                 <TableHead>Status</TableHead>
-
                 <TableHead>Condition</TableHead>
-
                 <TableHead>Location</TableHead>
-
                 <TableHead className="text-right">
                   <button
                     type="button"
@@ -310,7 +298,7 @@ const AssetsTable = ({
                   </button>
                 </TableHead>
 
-                <TableHead className="min-w-[130px]">
+                <TableHead className="min-w-32.5">
                   <button
                     type="button"
                     onClick={() => onSort("purchaseDate")}
@@ -321,7 +309,7 @@ const AssetsTable = ({
                   </button>
                 </TableHead>
 
-                <TableHead className="w-[60px]" />
+                <TableHead className="w-15" />
               </TableRow>
             </TableHeader>
 
@@ -333,7 +321,6 @@ const AssetsTable = ({
                     className="group transition-colors hover:bg-muted/30"
                   >
                     {/* ASSET */}
-
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border bg-muted">
@@ -364,7 +351,6 @@ const AssetsTable = ({
                     </TableCell>
 
                     {/* TAG */}
-
                     <TableCell>
                       <span className="rounded-md bg-muted px-2 py-1 font-mono text-xs font-medium">
                         {asset.assetTag}
@@ -372,11 +358,9 @@ const AssetsTable = ({
                     </TableCell>
 
                     {/* CATEGORY */}
-
                     <TableCell>{asset.category?.name || "—"}</TableCell>
 
                     {/* BRAND / MODEL */}
-
                     <TableCell>
                       <p className="font-medium">{asset.brand || "—"}</p>
 
@@ -386,7 +370,6 @@ const AssetsTable = ({
                     </TableCell>
 
                     {/* SERIAL */}
-
                     <TableCell>
                       <span className="font-mono text-xs">
                         {asset.serialNumber || "—"}
@@ -394,19 +377,15 @@ const AssetsTable = ({
                     </TableCell>
 
                     {/* STATUS */}
-
                     <TableCell>{getStatusBadge(asset.status)}</TableCell>
 
                     {/* CONDITION */}
-
                     <TableCell>{getConditionBadge(asset.condition)}</TableCell>
 
                     {/* LOCATION */}
-
                     <TableCell>{asset.location || "—"}</TableCell>
 
                     {/* PRICE */}
-
                     <TableCell className="text-right">
                       <span className="font-medium">
                         ৳ {formatPrice(asset.purchasePrice)}
@@ -414,21 +393,11 @@ const AssetsTable = ({
                     </TableCell>
 
                     {/* DATE */}
-
                     <TableCell>{formatDate(asset.purchaseDate)}</TableCell>
 
                     {/* ACTION */}
-
                     <TableCell>
                       <DropdownMenu>
-                        {/* <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                          >
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger> */}
                         <DropdownMenuTrigger>
                           <MoreHorizontal className="h-4 w-4" />
                         </DropdownMenuTrigger>
@@ -462,9 +431,7 @@ const AssetsTable = ({
                       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
                         <Search className="h-5 w-5 text-muted-foreground" />
                       </div>
-
                       <p className="font-medium">No assets found</p>
-
                       <p className="text-sm text-muted-foreground">
                         Try changing your search or filter criteria.
                       </p>
@@ -478,7 +445,6 @@ const AssetsTable = ({
       </div>
 
       {/* PAGINATION */}
-
       {totalItems > 0 && (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
