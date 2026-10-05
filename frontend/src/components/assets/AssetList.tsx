@@ -21,7 +21,7 @@ const AssetList = () => {
   const [sortBy, setSortBy] = useState<SortField>("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(3);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const { data, isLoading, isError } = useGetAllAssets({
