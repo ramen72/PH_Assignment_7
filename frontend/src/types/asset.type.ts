@@ -90,7 +90,7 @@ export interface CreateAssetPayload {
   assetTag: string;
   name: string;
   categoryId: string;
-  brand: Brand;
+  brand: string;
   model: string;
   serialNumber: string;
   description?: string;
@@ -100,6 +100,5 @@ export interface CreateAssetPayload {
   condition?: AssetCondition;
   status?: AssetStatus;
   location?: string;
-  imageUrl?: string;
   vendorId?: string;
 }

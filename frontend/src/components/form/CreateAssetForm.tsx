@@ -219,7 +219,6 @@ const CreateAssetForm = () => {
             warrantyExpiry: "",
             condition: "NEW",
             location: "",
-            imageUrl: "",
             vendorId: "",
         } as CreateAssetFormValues,
 
@@ -235,14 +234,13 @@ const CreateAssetForm = () => {
                 brand: value.brand,
                 model: value.model,
                 serialNumber: value.serialNumber,
-                description: value.description || undefined,
+                description: value.description,
                 purchasePrice: value.purchasePrice,
                 purchaseDate: value.purchaseDate,
-                warrantyExpiry: value.warrantyExpiry || undefined,
+                warrantyExpiry: value.warrantyExpiry,
                 condition: value.condition,
-                location: value.location || undefined,
-                imageUrl: value.imageUrl || undefined,
-                vendorId: value.vendorId || undefined,
+                location: value.location,
+                vendorId: value.vendorId,
             };
 
             createAsset(payload, {
@@ -367,84 +365,6 @@ const CreateAssetForm = () => {
                                         </form.Field>
 
                                         {/* Category */}
-                                        {/* <form.Field
-                                            name="categoryId"
-                                            validators={{
-                                                onChange:
-                                                    createAssetSchema.shape.categoryId,
-                                            }}
-                                        >
-                                            {(field) => {
-                                                const isInvalid =
-                                                    field.state.meta.isTouched &&
-                                                    !field.state.meta.isValid;
-
-                                                return (
-                                                    <Field data-invalid={isInvalid}>
-                                                        <FieldLabel>
-                                                            Category
-                                                            <Required />
-                                                        </FieldLabel>
-
-                                                        <Select
-                                                            value={field.state.value}
-                                                            onValueChange={(value) => {
-                                                                if (value) {
-                                                                    field.handleChange(value);
-                                                                }
-                                                            }}
-                                                            disabled={
-                                                                isCategoriesLoading
-                                                            }
-                                                        >
-                                                            <SelectTrigger
-                                                                className="h-11 rounded-xl border-slate-200 bg-slate-50/50 transition-all hover:bg-white focus:ring-2 focus:ring-indigo-500/20"
-                                                                aria-invalid={isInvalid}
-                                                            >
-                                                                <SelectValue
-                                                                    placeholder={
-                                                                        isCategoriesLoading
-                                                                            ? "Loading categories..."
-                                                                            : "Select category"
-                                                                    }
-                                                                />
-                                                            </SelectTrigger>
-
-                                                            <SelectContent>
-                                                                {categories?.data?.map(
-                                                                    (
-                                                                        category: Category,
-                                                                    ) => (
-                                                                        <SelectItem
-                                                                            key={
-                                                                                category.id
-                                                                            }
-                                                                            value={
-                                                                                category.id
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                category.name
-                                                                            }
-                                                                        </SelectItem>
-                                                                    ),
-                                                                )}
-                                                            </SelectContent>
-                                                        </Select>
-
-                                                        {isInvalid && (
-                                                            <FieldError
-                                                                errors={
-                                                                    field.state.meta
-                                                                        .errors
-                                                                }
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                );
-                                            }}
-                                        </form.Field> */}
-                                        {/* ========================== */}
                                         <form.Field
                                             name="categoryId"
                                             validators={{
@@ -517,96 +437,8 @@ const CreateAssetForm = () => {
                                                 );
                                             }}
                                         </form.Field>                                        
-                                        {/* ========================== */}
 
                                         {/* Vendor */}
-                                        {/* <form.Field
-                                            name="vendorId"
-                                            validators={{
-                                                onChange:
-                                                    createAssetSchema.shape.vendorId,
-                                            }}
-                                        >
-                                            {(field) => {
-                                                const isInvalid =
-                                                    field.state.meta.isTouched &&
-                                                    !field.state.meta.isValid;
-
-                                                return (
-                                                    <Field data-invalid={isInvalid}>
-                                                        <FieldLabel>
-                                                            Vendor
-                                                            <span className="ml-1 text-xs font-normal text-slate-400">
-                                                                Optional
-                                                            </span>
-                                                        </FieldLabel>
-
-                                                        <Select
-                                                            value={
-                                                                field.state.value
-                                                            }
-                                                            onValueChange={(
-                                                                value,
-                                                            ) => {
-                                                                if (value) {
-                                                                    field.handleChange(
-                                                                        value,
-                                                                    );
-                                                                }
-                                                            }}
-                                                            disabled={
-                                                                isVendorLoading
-                                                            }
-                                                        >
-                                                            <SelectTrigger
-                                                                className="h-11 rounded-xl border-slate-200 bg-slate-50/50 transition-all hover:bg-white focus:ring-2 focus:ring-indigo-500/20"
-                                                                aria-invalid={
-                                                                    isInvalid
-                                                                }
-                                                            >
-                                                                <SelectValue
-                                                                    placeholder={
-                                                                        isVendorLoading
-                                                                            ? "Loading vendors..."
-                                                                            : "Select vendor"
-                                                                    }
-                                                                />
-                                                            </SelectTrigger>
-
-                                                            <SelectContent>
-                                                                {vendorsData?.data?.map(
-                                                                    (
-                                                                        vendor: Vendor,
-                                                                    ) => (
-                                                                        <SelectItem
-                                                                            key={
-                                                                                vendor.id
-                                                                            }
-                                                                            value={
-                                                                                vendor.id
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                vendor.name
-                                                                            }
-                                                                        </SelectItem>
-                                                                    ),
-                                                                )}
-                                                            </SelectContent>
-                                                        </Select>
-
-                                                        {isInvalid && (
-                                                            <FieldError
-                                                                errors={
-                                                                    field.state.meta
-                                                                        .errors
-                                                                }
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                );
-                                            }}
-                                        </form.Field> */}
                                         <form.Field
                                             name="vendorId"
                                             validators={{
@@ -692,83 +524,6 @@ const CreateAssetForm = () => {
                                 >
                                     <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
                                     {/* Brand */}
-                                        {/* <form.Field
-                                            name="brand"
-                                            validators={{
-                                                onChange:
-                                                    createAssetSchema.shape.brand,
-                                            }}
-                                        >
-                                            {(field) => {
-                                                const isInvalid =
-                                                    field.state.meta.isTouched &&
-                                                    !field.state.meta.isValid;
-
-                                                return (
-                                                    <Field data-invalid={isInvalid}>
-                                                        <FieldLabel>
-                                                            Brand
-                                                            <Required />
-                                                        </FieldLabel>
-
-                                                        <Select
-                                                            value={field.state.value}
-                                                            onValueChange={(value) => {
-                                                                if (value) {
-                                                                    field.handleChange(value);
-                                                                }
-                                                            }}
-                                                            disabled={
-                                                                isCategoriesLoading
-                                                            }
-                                                        >
-                                                            <SelectTrigger
-                                                                className="h-11 rounded-xl border-slate-200 bg-slate-50/50 transition-all hover:bg-white focus:ring-2 focus:ring-indigo-500/20"
-                                                                aria-invalid={isInvalid}
-                                                            >
-                                                                <SelectValue
-                                                                    placeholder={
-                                                                        isCategoriesLoading
-                                                                            ? "Loading brand..."
-                                                                            : "Select brand"
-                                                                    }
-                                                                />
-                                                            </SelectTrigger>
-
-                                                            <SelectContent className={"border py-2"}>
-                                                                {brands?.map(
-                                                                    (
-                                                                        brand
-                                                                    ) => (
-                                                                        <SelectItem
-                                                                            key={
-                                                                                brand.id
-                                                                            }
-                                                                            value={
-                                                                                brand.id
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                brand.name
-                                                                            }
-                                                                        </SelectItem>
-                                                                    ),
-                                                                )}
-                                                            </SelectContent>
-                                                        </Select>
-
-                                                        {isInvalid && (
-                                                            <FieldError
-                                                                errors={
-                                                                    field.state.meta
-                                                                        .errors
-                                                                }
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                );
-                                            }}
-                                        </form.Field> */}
                                         <form.Field
                                             name="brand"
                                             validators={{
@@ -881,58 +636,6 @@ const CreateAssetForm = () => {
                                         </form.Field>
                                         </div>
 
-                                    {/* <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-
-                                        {[
-                                            [
-                                                "brand",
-                                                "Brand",
-                                                "Dell",
-                                            ],
-                                            [
-                                                "model",
-                                                "Model",
-                                                "Latitude 5420",
-                                            ],
-                                            [
-                                                "serialNumber",
-                                                "Serial Number",
-                                                "DL5420-001",
-                                            ],
-                                        ].map(
-                                            ([
-                                                name,
-                                                label,
-                                                placeholder,
-                                            ]) => (
-                                                <form.Field
-                                                    key={name}
-                                                    name={
-                                                        name as
-                                                            | "brand"
-                                                            | "model"
-                                                            | "serialNumber"
-                                                    }
-                                                    validators={{
-                                                        onChange:
-                                                            createAssetSchema.shape.categoryId,
-                                                    }}
-                                                >
-                                                    {(field) => (
-                                                        <FormInput
-                                                            field={field}
-                                                            label={label}
-                                                            placeholder={
-                                                                placeholder
-                                                            }
-                                                            optional
-                                                        />
-                                                    )}
-                                                </form.Field>
-                                            ),
-                                        )}
-                                    </div> */}
-
                                     {/* Description */}
                                     <div className="mt-5">
                                         <form.Field
@@ -998,8 +701,6 @@ const CreateAssetForm = () => {
 
                                 
                                 {/* PURCHASE INFORMATION */}
-                                
-
                                 <FormSection
                                     icon={<WalletCards className="size-5" />}
                                     title="Purchase Information"
@@ -1121,8 +822,6 @@ const CreateAssetForm = () => {
 
                                 
                                 {/* ASSET STATUS */}
-                                
-
                                 <FormSection
                                     icon={<CheckCircle2 className="size-5" />}
                                     title="Asset Status"
