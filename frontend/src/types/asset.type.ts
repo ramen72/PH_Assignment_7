@@ -1,3 +1,20 @@
+import { Brand } from "./brand.type";
+
+export type AssetCondition =
+  | "NEW"
+  | "GOOD"
+  | "FAIR"
+  | "POOR"
+  | "DAMAGED";
+
+export type AssetStatus =
+  | "AVAILABLE"
+  | "ASSIGNED"
+  | "UNDER_MAINTENANCE"
+  | "LOST"
+  | "DAMAGED"
+  | "RETIRED"
+  | "DISPOSED";
 export interface Asset {
   id: string;
   assetTag: string;
@@ -17,7 +34,7 @@ export interface Asset {
   serialNumber: string;
   description?: string;
 
-  purchasePrice: string;
+  purchasePrice: number;
   purchaseDate: string;
   warrantyExpiry: string;
 
@@ -51,28 +68,6 @@ export interface Asset {
   };
 }
 
-export interface Category {
-  id: string
-  name: string
-  description: string
-  createdAt: string
-  updatedAt: string
-}
-
-export interface Vendor {
-  id: string
-  name: string
-  companyName: string
-  email: string
-  phone: string
-  address: string
-  website: string
-  contactPerson: string
-  isActive: boolean
-  createdAt: string
-  updatedAt: string
-}
-
 export interface UpdateAssetPayload {
   name?: string;
   assetTag?: string;
@@ -88,4 +83,23 @@ export interface UpdateAssetPayload {
   purchasePrice?: number;
   purchaseDate?: string;
   warrantyExpiry?: string;
+}
+
+
+export interface CreateAssetPayload {
+  assetTag: string;
+  name: string;
+  categoryId: string;
+  brand: Brand;
+  model: string;
+  serialNumber: string;
+  description?: string;
+  purchasePrice: number;
+  purchaseDate: string;
+  warrantyExpiry: string;
+  condition?: AssetCondition;
+  status?: AssetStatus;
+  location?: string;
+  imageUrl?: string;
+  vendorId?: string;
 }

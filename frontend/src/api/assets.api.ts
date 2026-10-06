@@ -1,5 +1,5 @@
 import apiClient from "@/lib/apiClient";
-import { UpdateAssetPayload } from "@/types";
+import { CreateAssetPayload, UpdateAssetPayload } from "@/types";
 
 export interface AssetFilterParams {
   searchTerm?: string;
@@ -53,5 +53,14 @@ export const updateAsset = (
 export const deleteAsset = (assetId: string) => {
   return apiClient(`/assets/${assetId}`, {
     method: "DELETE",
+  });
+};
+
+
+// CREATE SINGLE ASSET
+export const createAsset = (payload: CreateAssetPayload) => {
+  return apiClient("/assets", {
+    method: "POST",
+    body: JSON.stringify(payload),
   });
 };

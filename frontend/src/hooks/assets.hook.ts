@@ -1,24 +1,14 @@
-// import { useQuery } from "@tanstack/react-query";
-// import { type AssetFilterParams, getAllAssets } from "@/api";
-
-// export const useGetAllAssets = (params?: AssetFilterParams) => {
-  
-//   return useQuery({
-//     queryKey: ["assets", params],
-//     queryFn: () => getAllAssets(params),
-//   });
-// };
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   type AssetFilterParams,
+  createAsset,
   deleteAsset,
   getAllAssets,
   getAssetById,
   updateAsset,
 } from "@/api";
-import { UpdateAssetPayload } from "@/types";
+import type { CreateAssetPayload, UpdateAssetPayload } from "@/types";
 
 export const useGetAllAssets = (
   params?: AssetFilterParams,
@@ -79,6 +69,22 @@ export const useDeleteAsset = () => {
 
     onSuccess: () => {
       // Refresh all asset queries
+      queryClient.invalidateQueries({
+        queryKey: ["assets"],
+      });
+    },
+  });
+};
+
+// CREATE ASSET
+export const useCreateAsset = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: CreateAssetPayload) =>
+      createAsset(payload),
+
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["assets"],
       });
