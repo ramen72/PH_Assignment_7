@@ -44,7 +44,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-import type { Brand, Category, Vendor } from "@/types";
+import type { Category, Vendor } from "@/types";
 
 const CreateAssetForm = () => {
     const {

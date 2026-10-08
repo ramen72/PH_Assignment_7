@@ -3,3 +3,4 @@ export * from "./assetsCategories.api";
 export * from "./auth.api";
 export * from "./payment.api";
 export * from "./vendor.api";
+export * from "./assetPurchase.api";

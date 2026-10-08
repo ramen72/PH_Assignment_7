@@ -47,16 +47,21 @@ export const useUpdateAsset = () => {
     }) => updateAsset(assetId, payload),
 
     onSuccess: (_, variables) => {
-      // Single asset cache update/refetch
-      queryClient.invalidateQueries({
+    // Single asset
+    queryClient.invalidateQueries({
         queryKey: ["asset", variables.assetId],
-      });
+    });
 
-      // Assets list refetch
-      queryClient.invalidateQueries({
+    // Asset list
+    queryClient.invalidateQueries({
         queryKey: ["assets"],
-      });
-    },
+    });
+
+    // Asset purchase list
+    queryClient.invalidateQueries({
+        queryKey: ["assets-purchase"],
+    });
+},
   });
 };
 
@@ -71,6 +76,11 @@ export const useDeleteAsset = () => {
       // Refresh all asset queries
       queryClient.invalidateQueries({
         queryKey: ["assets"],
+      });
+      
+      // Refresh all asset queries
+      queryClient.invalidateQueries({
+        queryKey: ["assets-purchase"],
       });
     },
   });

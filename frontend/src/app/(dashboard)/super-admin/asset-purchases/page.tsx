@@ -56,7 +56,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useGetAllAssetPurchases } from "@/hooks";
+import { useGetAllAssetPurchases } from '@/hooks';
 
 /* -------------------------------------------------------------------------- */
 /* Types                                                                      */
@@ -321,7 +321,7 @@ export default function AssetPurchasesPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[500px] items-center justify-center">
+      <div className="flex min-h-125 items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="size-8 animate-spin text-primary" />
 
@@ -339,7 +339,7 @@ export default function AssetPurchasesPage() {
 
   if (isError) {
     return (
-      <div className="flex min-h-[500px] items-center justify-center">
+      <div className="flex min-h-125 items-center justify-center">
         <Card className="w-full max-w-md">
           <CardContent className="flex flex-col items-center justify-center gap-4 py-10 text-center">
             <div className="rounded-full bg-red-100 p-3">
@@ -392,8 +392,7 @@ export default function AssetPurchasesPage() {
         </div>
 
         <Button>
-          <Link href="/asset-purchases/create">
-            <Plus className="mr-2 size-4" />
+          <Link href="/super-admin/asset-purchases/create">
             Create Purchase
           </Link>
         </Button>
@@ -540,7 +539,7 @@ export default function AssetPurchasesPage() {
               value={paymentStatus}
               onValueChange={handleStatusChange}
             >
-              <SelectTrigger className="w-full md:w-[180px]">
+              <SelectTrigger className="w-full md:w-45">
                 <SelectValue placeholder="Payment status" />
               </SelectTrigger>
 
@@ -728,7 +727,7 @@ export default function AssetPurchasesPage() {
                 value={String(limit)}
                 onValueChange={handleLimitChange}
               >
-                <SelectTrigger className="w-[80px]">
+                <SelectTrigger className="w-20">
                   <SelectValue />
                 </SelectTrigger>
 

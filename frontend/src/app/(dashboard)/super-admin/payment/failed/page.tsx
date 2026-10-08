@@ -2,27 +2,44 @@
 
 import { XCircle } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 
 export default function PaymentFailedPage() {
-  return (
-    <div className="flex min-h-[70vh] items-center justify-center">
-      <div className="text-center">
-        <XCircle className="mx-auto mb-4 size-16 text-red-500" />
+  const searchParams = useSearchParams();
 
-        <h1 className="text-2xl font-bold">
+  const reason = searchParams.get("reason");
+
+  const message =
+    reason === "cancelled"
+      ? "You cancelled the bKash payment."
+      : reason === "payment_failed"
+        ? "The bKash payment could not be completed."
+        : "We could not complete your payment.";
+
+  return (
+    <div className="flex min-h-[70vh] items-center justify-center px-4">
+      <div className="max-w-md text-center">
+        <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-red-100">
+          <XCircle className="size-12 text-red-600" />
+        </div>
+
+        <h1 className="mt-6 text-3xl font-bold">
           Payment Failed
         </h1>
 
         <p className="mt-2 text-muted-foreground">
-          Your bKash payment could not be completed.
+          {message}
         </p>
 
-        <Button asChild className="mt-6">
-          <Link href="/asset-purchases">
-            Back to Purchases
-          </Link>
-        </Button>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <Button variant="outline">
+            <Link href="/asset-purchases">
+              Back to Purchases
+            </Link>
+          </Button>
+        </div>
       </div>
     </div>
   );
