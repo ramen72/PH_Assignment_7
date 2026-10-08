@@ -1,16 +1,3 @@
-// import { BkashPayButton } from '@/components/assets/PurchaseButton';
-// import React from 'react';
-
-// const AssetPurchase = () => {
-//     return (
-//         <div>
-//             <BkashPayButton/>
-//         </div>
-//     );
-// };
-
-// export default AssetPurchase;
-
 "use client";
 
 import { useMemo, useState } from "react";
@@ -19,11 +6,12 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
+  CreditCard,
   Eye,
   FileText,
   Loader2,
+  MoreHorizontal,
   Package,
-  Plus,
   RefreshCw,
   Search,
   Store,
@@ -56,7 +44,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useGetAllAssetPurchases } from '@/hooks';
+import { useGetAllAssetPurchases, useCreateBkashPayment } from '@/hooks';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 /* -------------------------------------------------------------------------- */
 /* Types                                                                      */
@@ -196,6 +185,15 @@ export default function AssetPurchasesPage() {
   /* Query                                                                    */
   /* ------------------------------------------------------------------------ */
 
+  const [payingPurchaseId, setPayingPurchaseId] = useState<string | null>(
+  null,
+);
+
+  const {
+  mutate: createPayment,
+  isPending: isPaymentPending,
+} = useCreateBkashPayment();
+
   const {
     data,
     isLoading,
@@ -207,6 +205,33 @@ export default function AssetPurchasesPage() {
     limit,
   });
 
+  const handlePayNow = (purchaseId: string) => {
+  setPayingPurchaseId(purchaseId);
+
+  createPayment(purchaseId, {
+    onSuccess: (response) => {
+      setPayingPurchaseId(null);
+
+      const paymentUrl =
+        response?.data?.paymentUrl ??
+        response?.data?.bkashURL ??
+        response?.data?.bkashUrl;
+
+      if (paymentUrl) {
+        window.location.href = paymentUrl;
+        return;
+      }
+
+      console.error("bKash payment URL not found:", response);
+    },
+
+    onError: (error) => {
+      setPayingPurchaseId(null);
+
+      console.error("Failed to create bKash payment:", error);
+    },
+  });
+};
   /* ------------------------------------------------------------------------ */
   /* Normalize API response                                                   */
   /* ------------------------------------------------------------------------ */
@@ -692,20 +717,53 @@ export default function AssetPurchasesPage() {
                         )}
                       </TableCell>
 
-                      {/* Actions */}
                       <TableCell>
                         <div className="flex justify-end">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            title="View purchase"
-                          >
-                            <Link
-                              href={`/asset-purchases/${purchase.id}`}
+                          <DropdownMenu>
+                            <DropdownMenuTrigger
+                              className="inline-flex size-8 items-center justify-center rounded-md hover:bg-muted"
+                              title="Actions"
                             >
-                              <Eye className="size-4" />
-                            </Link>
-                          </Button>
+                              <MoreHorizontal className="size-4" />
+                              <span className="sr-only">Open actions</span>
+                            </DropdownMenuTrigger>
+
+                            <DropdownMenuContent align="end" className="w-40">
+                              <DropdownMenuItem>
+                                <Link
+                                  href={`/asset-purchases/${purchase.id}`}
+                                  className="flex cursor-pointer items-center"
+                                >
+                                  <Eye className="mr-2 size-4" />
+                                  View
+                                </Link>
+                              </DropdownMenuItem>
+
+                              {purchase.paymentStatus === "PENDING" && (
+                                <DropdownMenuItem
+                                  disabled={
+                                    isPaymentPending &&
+                                    payingPurchaseId === purchase.id
+                                  }
+                                  onClick={() => handlePayNow(purchase.id)}
+                                  className="cursor-pointer"
+                                >
+                                  {isPaymentPending &&
+                                    payingPurchaseId === purchase.id ? (
+                                    <>
+                                      <Loader2 className="mr-2 size-4 animate-spin" />
+                                      Processing...
+                                    </>
+                                  ) : (
+                                    <>
+                                      <CreditCard className="mr-2 size-4" />
+                                      Pay Now
+                                    </>
+                                  )}
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                       </TableCell>
                     </TableRow>

@@ -8,6 +8,8 @@ export interface AssetPurchasePayload {
   paymentStatus: string;
   invoiceUrl: string;
   remarks?: string;
+  page?: number;
+  limit?: number;
 }
 
 export interface AssetPurchaseFilterParams {

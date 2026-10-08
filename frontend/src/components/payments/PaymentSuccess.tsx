@@ -3,7 +3,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
-export default function PaymentSuccessPage() {
+export default function PaymentSuccess() {
   const searchParams = useSearchParams();
 
   const paymentId = searchParams.get("paymentId");

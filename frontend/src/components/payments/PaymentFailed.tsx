@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 
-export default function PaymentFailedPage() {
+export default function PaymentFailed() {
   const searchParams = useSearchParams();
 
   const reason = searchParams.get("reason");

@@ -5,10 +5,12 @@ export const useCreateBkashPayment  = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (purchaseId: string) =>
-      createBkashPayment(purchaseId),
+    mutationFn: (purchaseId: string) => createBkashPayment(purchaseId),
 
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["asset-purchases"],
+      });
       queryClient.invalidateQueries({
         queryKey: ["assets"],
       });
