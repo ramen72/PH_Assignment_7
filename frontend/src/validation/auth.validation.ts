@@ -78,21 +78,6 @@ import z from "zod";
             "Please provide a valid Bangladesh emergency contact phone number.",
         })
         .optional(),
-      // dateOfBirth: z
-      //   .string("Date of birth must be a valid date string.")
-      //   .refine((value) => value === "" || !Number.isNaN(Date.parse(value)), {
-      //     message: "Date of birth must be a valid date.",
-      //   })
-      //   .optional()
-      //   .transform((value) => (value === "" ? undefined : value)),
-      // joiningDate: z
-      //   .string("Joining date must be a valid date string.")
-      //   .refine((value) => value === "" || !Number.isNaN(Date.parse(value)), {
-      //     message: "Joining date must be a valid date.",
-      //   })
-      //   .optional()
-      //   .transform((value) => (value === "" ? undefined : value)),
-
       dateOfBirth: z
         .string()
         .optional()

@@ -697,13 +697,6 @@ const form = useForm({
                 }}
               </form.Field>
             </div>
-
-            {/* <Button type="submit">
-              {
-                registrationIPending ? <><Skeleton className="size-4 rounded-md"
-                  data-sidebar="menu-skeleton-icon" /> </> : "Submit"
-              }
-            </Button> */}
             <Button
               type="submit"
               disabled={registrationIPending || form.state.isSubmitting}
