@@ -20,7 +20,7 @@ export interface AssetPurchaseFilterParams {
   invoiceNumber?: string;
   quantity?: number;
   unitPrice?: number;
-  purchaseDate: Date;
+  purchaseDate?: string;
   paymentStatus?: string;
   invoiceUrl?: string;
   remarks?: string;

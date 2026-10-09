@@ -45,6 +45,7 @@ import {
 } from "@/components/ui/select";
 
 import type { Category, Vendor } from "@/types";
+import { toast } from "../ui/toast";
 
 const CreateAssetForm = () => {
     const {
@@ -63,147 +64,147 @@ const CreateAssetForm = () => {
     } = useGetAllVendors();
 
     const brands = [
-        {
-            "id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
-            "name": "Dell Technologies",
-            "description": "Enterprise server infrastructure, PowerEdge systems, and corporate client devices",
-            "created_at": "2026-01-15 08:30:00.000",
-            "updated_at": "2026-01-15 08:30:00.000"
-        },
-        {
-            "id": "b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a22",
-            "name": "HP Inc.",
-            "description": "Personal computing hardware, workstation laptops, and commercial printing solutions",
-            "created_at": "2026-01-18 10:15:22.100",
-            "updated_at": "2026-02-01 14:05:10.500"
-        },
-        {
-            "id": "c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a33",
-            "name": "ASUS",
-            "description": null,
-            "created_at": "2026-01-20 12:00:00.000",
-            "updated_at": "2026-01-20 12:00:00.000"
-        },
-        {
-            "id": "d3eebc99-9c0b-4ef8-bb6d-6bb9bd380a44",
-            "name": "Lenovo Group",
-            "description": "ThinkPad enterprise series, Legion gaming hardware, and data center solutions",
-            "created_at": "2026-02-01 09:45:12.333",
-            "updated_at": "2026-02-10 11:20:45.120"
-        },
-        {
-            "id": "e4eebc99-9c0b-4ef8-bb6d-6bb9bd380a55",
-            "name": "Apple Inc.",
-            "description": "MacBook hardware, Apple Silicon chips, and macOS ecosystem software",
-            "created_at": "2026-02-05 16:20:00.000",
-            "updated_at": "2026-02-05 16:20:00.000"
-        },
-        {
-            "id": "f5eebc99-9c0b-4ef8-bb6d-6bb9bd380a66",
-            "name": "Cisco Systems",
-            "description": "Enterprise networking switches, routers, and industrial cybersecurity devices",
-            "created_at": "2026-02-12 11:05:40.000",
-            "updated_at": "2026-02-18 09:30:15.800"
-        },
-        {
-            "id": "06eebc99-9c0b-4ef8-bb6d-6bb9bd380a77",
-            "name": "Acer",
-            "description": null,
-            "created_at": "2026-02-15 14:10:05.500",
-            "updated_at": "2026-02-15 14:10:05.500"
-        },
-        {
-            "id": "17eebc99-9c0b-4ef8-bb6d-6bb9bd380a88",
-            "name": "IBM",
-            "description": "Hybrid cloud infrastructure, zSystems mainframes, and AI software",
-            "created_at": "2026-02-22 07:55:30.250",
-            "updated_at": "2026-03-01 16:40:00.000"
-        },
-        {
-            "id": "28eebc99-9c0b-4ef8-bb6d-6bb9bd380a99",
-            "name": "Intel Corporation",
-            "description": "Xeon server processors, Core client CPUs, and semiconductor manufacturing",
-            "created_at": "2026-03-02 13:14:15.000",
-            "updated_at": "2026-03-02 13:14:15.000"
-        },
-        {
-            "id": "39eebc99-9c0b-4ef8-bb6d-6bb9bd380aa0",
-            "name": "Advanced Micro Devices (AMD)",
-            "description": "EPYC cloud processors, Instinct AI accelerators, and Ryzen chips",
-            "created_at": "2026-03-05 18:00:10.111",
-            "updated_at": "2026-03-12 10:00:00.000"
-        },
-        {
-            "id": "40eebc99-9c0b-4ef8-bb6d-6bb9bd380ab1",
-            "name": "MSI (Micro-Star International)",
-            "description": null,
-            "created_at": "2026-03-10 08:00:00.000",
-            "updated_at": "2026-03-10 08:00:00.000"
-        },
-        {
-            "id": "51eebc99-9c0b-4ef8-bb6d-6bb9bd380ac2",
-            "name": "NVIDIA Corporation",
-            "description": "GPU acceleration platforms, AI data center hardware, and CUDA software",
-            "created_at": "2026-03-15 15:30:22.000",
-            "updated_at": "2026-03-20 17:45:00.000"
-        },
-        {
-            "id": "62eebc99-9c0b-4ef8-bb6d-6bb9bd380ad3",
-            "name": "Microsoft Hardware",
-            "description": "Surface enterprise devices, HoloLens, and Xbox hardware engineering",
-            "created_at": "2026-03-18 10:25:00.500",
-            "updated_at": "2026-03-18 10:25:00.500"
-        },
-        {
-            "id": "73eebc99-9c0b-4ef8-bb6d-6bb9bd380ae4",
-            "name": "Fujitsu",
-            "description": "Enterprise IT services, mainframe systems, and supercomputing hardware",
-            "created_at": "2026-03-22 11:50:00.000",
-            "updated_at": "2026-03-25 12:10:00.000"
-        },
-        {
-            "id": "84eebc99-9c0b-4ef8-bb6d-6bb9bd380af5",
-            "name": "Hewlett Packard Enterprise (HPE)",
-            "description": "ProLiant servers, Nimble storage arrays, and Aruba networking hardware",
-            "created_at": "2026-03-28 09:12:34.999",
-            "updated_at": "2026-03-28 09:12:34.999"
-        },
-        {
-            "id": "95eebc99-9c0b-4ef8-bb6d-6bb9bd380b06",
-            "name": "Samsung Electronics",
-            "description": "Enterprise NVMe SSD storage, mobile devices, and semiconductor memory chips",
-            "created_at": "2026-04-01 14:00:00.000",
-            "updated_at": "2026-04-02 15:20:00.000"
-        },
-        {
-            "id": "06eebc99-9c0b-4ef8-bb6d-6bb9bd380b17",
-            "name": "Supermicro",
-            "description": null,
-            "created_at": "2026-04-05 16:45:10.000",
-            "updated_at": "2026-04-05 16:45:10.000"
-        },
-        {
-            "id": "17eebc99-9c0b-4ef8-bb6d-6bb9bd380b28",
-            "name": "Seagate Technology",
-            "description": "Enterprise mass-capacity hard drives and edge storage systems",
-            "created_at": "2026-04-10 10:10:10.100",
-            "updated_at": "2026-04-11 11:11:11.200"
-        },
-        {
-            "id": "28eebc99-9c0b-4ef8-bb6d-6bb9bd380b39",
-            "name": "Western Digital",
-            "description": "SanDisk memory solutions, Ultrastar enterprise drives, and consumer SSDs",
-            "created_at": "2026-04-15 08:05:00.000",
-            "updated_at": "2026-04-15 08:05:00.000"
-        },
-        {
-            "id": "39eebc99-9c0b-4ef8-bb6d-6bb9bd380b40",
-            "name": "Gigabyte Technology",
-            "description": "Server motherboards, GPU workstation chassis, and PC hardware components",
-            "created_at": "2026-04-20 12:30:45.000",
-            "updated_at": "2026-04-22 14:00:00.000"
-        }
-    ]
+    {
+        "id": "dell-technologies",
+        "name": "Dell Technologies",
+        "description": "Enterprise server infrastructure, PowerEdge systems, and corporate client devices",
+        "created_at": "2026-01-15 08:30:00.000",
+        "updated_at": "2026-01-15 08:30:00.000"
+    },
+    {
+        "id": "hp-inc",
+        "name": "HP Inc.",
+        "description": "Personal computing hardware, workstation laptops, and commercial printing solutions",
+        "created_at": "2026-01-18 10:15:22.100",
+        "updated_at": "2026-02-01 14:05:10.500"
+    },
+    {
+        "id": "asus",
+        "name": "ASUS",
+        "description": null,
+        "created_at": "2026-01-20 12:00:00.000",
+        "updated_at": "2026-01-20 12:00:00.000"
+    },
+    {
+        "id": "lenovo-group",
+        "name": "Lenovo Group",
+        "description": "ThinkPad enterprise series, Legion gaming hardware, and data center solutions",
+        "created_at": "2026-02-01 09:45:12.333",
+        "updated_at": "2026-02-10 11:20:45.120"
+    },
+    {
+        "id": "apple-inc",
+        "name": "Apple Inc.",
+        "description": "MacBook hardware, Apple Silicon chips, and macOS ecosystem software",
+        "created_at": "2026-02-05 16:20:00.000",
+        "updated_at": "2026-02-05 16:20:00.000"
+    },
+    {
+        "id": "cisco-systems",
+        "name": "Cisco Systems",
+        "description": "Enterprise networking switches, routers, and industrial cybersecurity devices",
+        "created_at": "2026-02-12 11:05:40.000",
+        "updated_at": "2026-02-18 09:30:15.800"
+    },
+    {
+        "id": "acer",
+        "name": "Acer",
+        "description": null,
+        "created_at": "2026-02-15 14:10:05.500",
+        "updated_at": "2026-02-15 14:10:05.500"
+    },
+    {
+        "id": "ibm",
+        "name": "IBM",
+        "description": "Hybrid cloud infrastructure, zSystems mainframes, and AI software",
+        "created_at": "2026-02-22 07:55:30.250",
+        "updated_at": "2026-03-01 16:40:00.000"
+    },
+    {
+        "id": "intel-corporation",
+        "name": "Intel Corporation",
+        "description": "Xeon server processors, Core client CPUs, and semiconductor manufacturing",
+        "created_at": "2026-03-02 13:14:15.000",
+        "updated_at": "2026-03-02 13:14:15.000"
+    },
+    {
+        "id": "advanced-micro-devices-amd",
+        "name": "Advanced Micro Devices (AMD)",
+        "description": "EPYC cloud processors, Instinct AI accelerators, and Ryzen chips",
+        "created_at": "2026-03-05 18:00:10.111",
+        "updated_at": "2026-03-12 10:00:00.000"
+    },
+    {
+        "id": "msi-micro-star-international",
+        "name": "MSI (Micro-Star International)",
+        "description": null,
+        "created_at": "2026-03-10 08:00:00.000",
+        "updated_at": "2026-03-10 08:00:00.000"
+    },
+    {
+        "id": "nvidia-corporation",
+        "name": "NVIDIA Corporation",
+        "description": "GPU acceleration platforms, AI data center hardware, and CUDA software",
+        "created_at": "2026-03-15 15:30:22.000",
+        "updated_at": "2026-03-20 17:45:00.000"
+    },
+    {
+        "id": "microsoft-hardware",
+        "name": "Microsoft Hardware",
+        "description": "Surface enterprise devices, HoloLens, and Xbox hardware engineering",
+        "created_at": "2026-03-18 10:25:00.500",
+        "updated_at": "2026-03-18 10:25:00.500"
+    },
+    {
+        "id": "fujitsu",
+        "name": "Fujitsu",
+        "description": "Enterprise IT services, mainframe systems, and supercomputing hardware",
+        "created_at": "2026-03-22 11:50:00.000",
+        "updated_at": "2026-03-25 12:10:00.000"
+    },
+    {
+        "id": "hewlett-packard-enterprise-hpe",
+        "name": "Hewlett Packard Enterprise (HPE)",
+        "description": "ProLiant servers, Nimble storage arrays, and Aruba networking hardware",
+        "created_at": "2026-03-28 09:12:34.999",
+        "updated_at": "2026-03-28 09:12:34.999"
+    },
+    {
+        "id": "samsung-electronics",
+        "name": "Samsung Electronics",
+        "description": "Enterprise NVMe SSD storage, mobile devices, and semiconductor memory chips",
+        "created_at": "2026-04-01 14:00:00.000",
+        "updated_at": "2026-04-02 15:20:00.000"
+    },
+    {
+        "id": "supermicro",
+        "name": "Supermicro",
+        "description": null,
+        "created_at": "2026-04-05 16:45:10.000",
+        "updated_at": "2026-04-05 16:45:10.000"
+    },
+    {
+        "id": "seagate-technology",
+        "name": "Seagate Technology",
+        "description": "Enterprise mass-capacity hard drives and edge storage systems",
+        "created_at": "2026-04-10 10:10:10.100",
+        "updated_at": "2026-04-11 11:11:11.200"
+    },
+    {
+        "id": "western-digital",
+        "name": "Western Digital",
+        "description": "SanDisk memory solutions, Ultrastar enterprise drives, and consumer SSDs",
+        "created_at": "2026-04-15 08:05:00.000",
+        "updated_at": "2026-04-15 08:05:00.000"
+    },
+    {
+        "id": "gigabyte-technology",
+        "name": "Gigabyte Technology",
+        "description": "Server motherboards, GPU workstation chassis, and PC hardware components",
+        "created_at": "2026-04-20 12:30:45.000",
+        "updated_at": "2026-04-22 14:00:00.000"
+    }
+]
 
     const form = useForm({
         defaultValues: {
@@ -226,33 +227,78 @@ const CreateAssetForm = () => {
             onSubmit: createAssetSchema,
         },
 
+        // onSubmit: async ({ value }) => {
+        //     const payload = {
+        //         assetTag: value.assetTag,
+        //         name: value.name,
+        //         categoryId: value.categoryId,
+        //         brand: value.brand,
+        //         model: value.model,
+        //         serialNumber: value.serialNumber,
+        //         description: value.description,
+        //         purchasePrice: value.purchasePrice,
+        //         purchaseDate: value.purchaseDate,
+        //         warrantyExpiry: value.warrantyExpiry,
+        //         condition: value.condition,
+        //         location: value.location,
+        //         vendorId: value.vendorId,
+        //     };
+
+        //     createAsset(payload, {
+        //         onSuccess: (value) => {
+        //             form.reset();
+        //             toast.add({
+        //                 type: "success",
+        //                 title: "Asset created successfully",
+        //             });
+        //         },
+
+        //         onError: (error) => {
+        //             console.error(
+        //                 "Create asset failed:",
+        //                 error,
+        //             );
+        //         },
+        //     });
+        // },
         onSubmit: async ({ value }) => {
-            const payload = {
-                assetTag: value.assetTag,
-                name: value.name,
-                categoryId: value.categoryId,
-                brand: value.brand,
-                model: value.model,
-                serialNumber: value.serialNumber,
-                description: value.description,
-                purchasePrice: value.purchasePrice,
-                purchaseDate: value.purchaseDate,
-                warrantyExpiry: value.warrantyExpiry,
-                condition: value.condition,
-                location: value.location,
-                vendorId: value.vendorId,
-            };
+            // console.log("Submitted values:", value);
+
+            const result = createAssetSchema.safeParse(value);
+
+            if (!result.success) {
+                console.error(
+                    "Validation failed:",
+                    result.error.flatten(),
+                );
+
+                toast.add({
+                    type: "error",
+                    title: "Please check the required fields",
+                });
+
+                return;
+            }
+
+            const payload = result.data;
 
             createAsset(payload, {
                 onSuccess: () => {
                     form.reset();
+
+                    toast.add({
+                        type: "success",
+                        title: "Asset created successfully",
+                    });
                 },
 
                 onError: (error) => {
-                    console.error(
-                        "Create asset failed:",
-                        error,
-                    );
+                    console.error("Create asset failed:", error);
+
+                    toast.add({
+                        type: "error",
+                        title: "Failed to create asset",
+                    });
                 },
             });
         },

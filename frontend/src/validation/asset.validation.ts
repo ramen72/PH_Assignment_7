@@ -65,7 +65,7 @@ export const createAssetSchema = z.object({
     imageUrl: z
         .string()
         .url("Please enter a valid image URL")
-        .or(z.literal("")),
+        .or(z.literal("")).optional(),
 
     vendorId: z
         .string()

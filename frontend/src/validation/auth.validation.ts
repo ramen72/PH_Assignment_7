@@ -1,4 +1,5 @@
-  import z from "zod";
+
+import z from "zod";
 
   export const RegisterZodSchema = z
     .object({
@@ -17,7 +18,9 @@
         .regex(/[a-z]/, {
           message: "Password must contain at least one lowercase letter.",
         })
-        .regex(/[0-9]/, { message: "Password must contain at least one number." })
+        .regex(/[0-9]/, {
+          message: "Password must contain at least one number.",
+        })
         .regex(/[^A-Za-z0-9]/, {
           message: "Password must contain at least one special character.",
         }),
@@ -39,8 +42,7 @@
         .min(2, { message: "Designation must be at least 2 characters long." })
         .max(100, { message: "Designation cannot exceed 100 characters." })
         .optional(),
-      status: z
-      .enum(["ACTIVE", "BLOCKED", "DELETED"]),
+      status: z.enum(["ACTIVE", "BLOCKED", "DELETED"]),
       emailVerified: z.boolean(),
       needPasswordChange: z.boolean(),
       bio: z
@@ -63,12 +65,6 @@
         .string("Country must be a string.")
         .max(100, { message: "Country cannot exceed 100 characters." })
         .optional(),
-      dateOfBirth: z
-        .string("Date of birth must be a valid date string.")
-        .refine((value) => !isNaN(Date.parse(value)), {
-          message: "Date of birth must be a valid date.",
-        })
-        .optional(),
       emergencyContactName: z
         .string("Emergency contact name must be a string.")
         .max(100, {
@@ -82,12 +78,46 @@
             "Please provide a valid Bangladesh emergency contact phone number.",
         })
         .optional(),
+      // dateOfBirth: z
+      //   .string("Date of birth must be a valid date string.")
+      //   .refine((value) => value === "" || !Number.isNaN(Date.parse(value)), {
+      //     message: "Date of birth must be a valid date.",
+      //   })
+      //   .optional()
+      //   .transform((value) => (value === "" ? undefined : value)),
+      // joiningDate: z
+      //   .string("Joining date must be a valid date string.")
+      //   .refine((value) => value === "" || !Number.isNaN(Date.parse(value)), {
+      //     message: "Joining date must be a valid date.",
+      //   })
+      //   .optional()
+      //   .transform((value) => (value === "" ? undefined : value)),
+
+      dateOfBirth: z
+        .string()
+        .optional()
+        .refine(
+          (value) =>
+            value === undefined ||
+            value === "" ||
+            !Number.isNaN(Date.parse(value)),
+          {
+            message: "Date of birth must be a valid date.",
+          },
+        ),
+
       joiningDate: z
-        .string("Joining date must be a valid date string.")
-        .refine((value) => !isNaN(Date.parse(value)), {
-          message: "Joining date must be a valid date.",
-        })
-        .optional(),
+        .string()
+        .optional()
+        .refine(
+          (value) =>
+            value === undefined ||
+            value === "" ||
+            !Number.isNaN(Date.parse(value)),
+          {
+            message: "Joining date must be a valid date.",
+          },
+        ),
       employeeId: z
         .string("Employee ID must be a string.")
         .max(50, { message: "Employee ID cannot exceed 50 characters." })

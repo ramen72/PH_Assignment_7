@@ -12,7 +12,7 @@ import type { BkashPayButtonProps } from "@/types";
 
 
 export function BkashPayButton({
-  purchaseId as ,
+  purchaseId,
   disabled = false,
   className,
 }: BkashPayButtonProps) {

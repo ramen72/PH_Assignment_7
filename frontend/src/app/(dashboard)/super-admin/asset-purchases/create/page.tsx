@@ -650,7 +650,11 @@ export default function CreateAssetPurchasePage() {
 
                                             <Select
                                                 value={field.state.value}
-                                                onValueChange={field.handleChange}
+                                                onValueChange={(value) => {
+                                                if (value !== null) {
+                                                    field.handleChange(value);
+                                                    }
+                                                }}
                                             >
                                                 <SelectTrigger className="w-full">
                                                     <SelectValue />

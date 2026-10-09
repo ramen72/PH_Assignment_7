@@ -319,11 +319,13 @@ export default function AssetPurchasesPage() {
   };
 
   const handleStatusChange = (value: string) => {
+    if (value === null) return;
     setPaymentStatus(value);
     setPage(1);
   };
 
   const handleLimitChange = (value: string) => {
+    if (value === null) return;
     setLimit(Number(value));
     setPage(1);
   };
@@ -562,7 +564,10 @@ export default function AssetPurchasesPage() {
 
             <Select
               value={paymentStatus}
-              onValueChange={handleStatusChange}
+              onValueChange={(value)=>{
+                if(!value) return
+                handleStatusChange
+              }}
             >
               <SelectTrigger className="w-full md:w-45">
                 <SelectValue placeholder="Payment status" />
@@ -783,7 +788,10 @@ export default function AssetPurchasesPage() {
 
               <Select
                 value={String(limit)}
-                onValueChange={handleLimitChange}
+                onValueChange={(value)=>{
+                  if(!value) return
+                  handleLimitChange
+                }}
               >
                 <SelectTrigger className="w-20">
                   <SelectValue />

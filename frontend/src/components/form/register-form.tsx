@@ -19,26 +19,30 @@ import type z from "zod";
 import { useRegistration } from "@/hooks";
 import { toast } from "../ui/toast";
 import { RegisterZodSchema } from "@/validation";
+import { Skeleton } from "../ui/skeleton";
 
 export function RegisterForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   type UserDefaultValues = z.infer<typeof RegisterZodSchema>;
 
   const defaultValues: UserDefaultValues = {
     name: "",
     email: "",
-    password: "@User123456",
-    confirmPassword: "@User123456",
+    password: "Super@admin321",
+    confirmPassword: "Super@admin321",
+    
+    status: "ACTIVE",
+    emailVerified: false,
+    needPasswordChange: false,
+    
     profileImage: "",
     phone: "01723445566",
     department: "",
     designation: "",
-    status: "ACTIVE",
-    emailVerified: false,
-    needPasswordChange: false,
     bio: "",
     address: "",
     city: "",
@@ -51,72 +55,85 @@ export function RegisterForm() {
     employeeId: "",
   };
 
-  const { mutate: registration } = useRegistration();
+  const { mutate: registration, isPending:registrationIPending } = useRegistration();
 
-  const form = useForm({
-    defaultValues,
-    validators: {
-      onSubmit: RegisterZodSchema,
-    },
-    onSubmit: async ({ value }) => {
-      const registrationData = {
-        name: value.name,
-        email: value.email,
-        password: value.password,
-        confirmPassword: value.confirmPassword,
-        profileImage: value.profileImage,
-        phone: value.phone,
-        department: value.department,
-        designation: value.designation,
-        status: value.status,
-        emailVerified: value.emailVerified,
-        needPasswordChange: value.needPasswordChange,
-        profile: {
-          bio: value?.bio,
-          address: value?.address,
-          city: value?.city,
-          postalCode: value?.postalCode,
-          country: value?.country,
-          dateOfBirth: value?.dateOfBirth,
-          emergencyContactName: value?.emergencyContactName,
-          emergencyContactPhone: value?.emergencyContactPhone,
-          joiningDate: value?.joiningDate,
-          employeeId: value?.employeeId,
-        },
-      };
+const form = useForm({
+  defaultValues,
 
-      registration(registrationData, {
-        onSuccess: (res) => {
-          if (!res.success) {
-            toast.add({
-              title: "Registration Failure",
-              description:
-                res.message || "Something went wrong. Please try again",
-              type: "error",
-            });
-          }
+  validators: {
+    onSubmit: RegisterZodSchema,
+  },
 
+  onSubmit: async ({ value }) => {
+    setHasSubmitted(true);
+    console.log(value)
+    const registrationData = {
+      name: value.name,
+      email: value.email,
+      password: value.password,
+      confirmPassword: value.confirmPassword,
+      // profileImage: value.profileImage,
+      phone: value.phone,
+      department: value.department,
+      designation: value.designation,
+      status: value.status,
+      emailVerified: value.emailVerified,
+      needPasswordChange: value.needPasswordChange,
+
+      profile: {
+        bio: value.bio,
+        address: value.address,
+        city: value.city,
+        postalCode: value.postalCode,
+        country: value.country,
+        dateOfBirth: value.dateOfBirth,
+        emergencyContactName: value.emergencyContactName,
+        emergencyContactPhone: value.emergencyContactPhone,
+        joiningDate: value.joiningDate,
+        employeeId: value.employeeId,
+      },
+    };
+
+    registration(registrationData, {
+      onSuccess: (res) => {
+        if (!res.success) {
           toast.add({
-            title: "Registration Successful",
+            title: "Registration Failure",
             description:
-              res.message || "To Complete Register, please verify your account",
-            type: "success",
-          });
-          const params = new URLSearchParams({ email: registrationData.email });
-          router.push(`/register/verify-account?${params.toString()}`);
-        },
-        onError: (err) => {
-          toast.add({
-            title: "Authorization failure",
-            description:
-              err.message || "Something went wrong. Please try again",
+              res.message || "Something went wrong. Please try again",
             type: "error",
           });
-        },
-      });
-    },
-  });
+          return;
+        }
 
+        toast.add({
+          title: "Registration Successful",
+          description:
+            res.message ||
+            "Please verify your account to complete registration",
+          type: "success",
+        });
+
+        const params = new URLSearchParams({
+          email: registrationData.email,
+        });
+
+        router.push(
+          `/register/verify-account?${params.toString()}`,
+        );
+      },
+
+      onError: (err) => {
+        toast.add({
+          title: "Registration Failure",
+          description:
+            err.message || "Something went wrong. Please try again",
+          type: "error",
+        });
+      },
+    });
+  },
+});
   return (
      <div className="bg-white border rounded-md shadow-md overflow-hidden">
       <div className="h-2 bg-linear-to-r from-[#1a7eca] to-[#80c7bf]"></div>
@@ -138,7 +155,7 @@ export function RegisterForm() {
         >
           <FieldGroup>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
-              <form.Field name="name">
+              {/* <form.Field name="name">
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
@@ -164,12 +181,43 @@ export function RegisterForm() {
                     </Field>
                   );
                 }}
-              </form.Field>
+              </form.Field> */}
+              
+          <form.Field name="name">
+            {(field) => {
+              const isInvalid =
+                (field.state.meta.isTouched || hasSubmitted) &&
+                !field.state.meta.isValid;
+
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel htmlFor={field.name}>Full Name</FieldLabel>
+
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    type="text"
+                    placeholder="Enter your Full name"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    aria-invalid={isInvalid}
+                    autoComplete="off"
+                  />
+
+                  {isInvalid && (
+                    <FieldError errors={field.state.meta.errors} />
+                  )}
+                </Field>
+              );
+            }}
+          </form.Field>
 
               <form.Field name="email">
                 {(field) => {
                   const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <FieldLabel htmlFor={field.name}>Email</FieldLabel>
@@ -198,8 +246,9 @@ export function RegisterForm() {
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
               <form.Field name="password">
                 {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                   const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
 
                   return (
                     <Field data-invalid={isInvalid}>
@@ -242,8 +291,9 @@ export function RegisterForm() {
 
               <form.Field name="confirmPassword">
                 {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                   const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <FieldLabel htmlFor={field.name}>
@@ -293,8 +343,9 @@ export function RegisterForm() {
             <div className="grid grid-cols-3 gap-4 sm:grid-cols-3">
               <form.Field name="phone">
                 {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                   const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <FieldLabel htmlFor={field.name}>Phone Number</FieldLabel>
@@ -321,8 +372,9 @@ export function RegisterForm() {
 
               <form.Field name="department">
                 {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                   const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <FieldLabel htmlFor={field.name}>Department</FieldLabel>
@@ -349,8 +401,9 @@ export function RegisterForm() {
 
               <form.Field name="designation">
                 {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                   const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <FieldLabel htmlFor={field.name}>Designation</FieldLabel>
@@ -376,10 +429,11 @@ export function RegisterForm() {
               </form.Field>
             </div>
 
-            {/* <form.Field name="bio">
+            <form.Field name="bio">
               {(field) => {
-                const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid;
+                 const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
                 return (
                   <Field data-invalid={isInvalid}>
                     <FieldLabel htmlFor={field.name}>BIO</FieldLabel>
@@ -399,13 +453,13 @@ export function RegisterForm() {
                     {isInvalid && <FieldError errors={field.state.meta.errors} />}
                   </Field>
                 );
-              }}
+                }}
             </form.Field>
-
             <form.Field name="address">
               {(field) => {
-                const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid;
+                 const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
                 return (
                   <Field data-invalid={isInvalid}>
                     <FieldLabel htmlFor={field.name}>Address</FieldLabel>
@@ -425,14 +479,15 @@ export function RegisterForm() {
                     {isInvalid && <FieldError errors={field.state.meta.errors} />}
                   </Field>
                 );
-              }}
+                }}
             </form.Field>
 
             <div className="grid grid-cols-3 gap-4 sm:grid-cols-3">
               <form.Field name="city">
                 {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                   const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <FieldLabel htmlFor={field.name}>City</FieldLabel>
@@ -451,16 +506,17 @@ export function RegisterForm() {
                       </div>
                       {isInvalid && (
                         <FieldError errors={field.state.meta.errors} />
-                      )}
+                        )}
                     </Field>
                   );
-                }}
+                  }}
               </form.Field>
 
               <form.Field name="postalCode">
                 {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                   const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <FieldLabel htmlFor={field.name}>Postal Code</FieldLabel>
@@ -475,20 +531,21 @@ export function RegisterForm() {
                           onChange={(e) => field.handleChange(e.target.value)}
                           aria-invalid={isInvalid}
                           autoComplete="name"
-                        />
+                          />
                       </div>
                       {isInvalid && (
                         <FieldError errors={field.state.meta.errors} />
-                      )}
+                        )}
                     </Field>
                   );
-                }}
+                  }}
               </form.Field>
 
               <form.Field name="country">
                 {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                   const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <FieldLabel htmlFor={field.name}>Country</FieldLabel>
@@ -503,22 +560,23 @@ export function RegisterForm() {
                           onChange={(e) => field.handleChange(e.target.value)}
                           aria-invalid={isInvalid}
                           autoComplete="name"
-                        />
+                          />
                       </div>
                       {isInvalid && (
                         <FieldError errors={field.state.meta.errors} />
-                      )}
+                        )}
                     </Field>
                   );
-                }}
+                  }}
               </form.Field>
             </div>
 
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
               <form.Field name="emergencyContactName">
                 {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                   const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <FieldLabel htmlFor={field.name}>
@@ -542,13 +600,14 @@ export function RegisterForm() {
                       )}
                     </Field>
                   );
-                }}
+                  }}
               </form.Field>
 
               <form.Field name="emergencyContactPhone">
                 {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                   const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <FieldLabel htmlFor={field.name}>
@@ -569,14 +628,90 @@ export function RegisterForm() {
                       </div>
                       {isInvalid && (
                         <FieldError errors={field.state.meta.errors} />
+                        )}
+                    </Field>
+                  );
+                  }}
+              </form.Field>
+                   
+            </div>
+            <div className="grid grid-cols-2 gap-x-4">
+              <form.Field name="dateOfBirth">
+                {(field) => {
+                  const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
+                  return (
+                    <Field data-invalid={isInvalid}>
+                      <FieldLabel htmlFor={field.name}>
+                        Date of Birth
+                      </FieldLabel>
+                      <div className="relative">
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          type="date"
+                          placeholder="Enter your Date of Birth..."
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                          aria-invalid={isInvalid}
+                          autoComplete="name"
+                        />
+                      </div>
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
                       )}
                     </Field>
                   );
                 }}
               </form.Field>
-            </div> */}
+              <form.Field name="joiningDate">
+                {(field) => {
+                  const isInvalid =
+                    (field.state.meta.isTouched || hasSubmitted) &&
+                    !field.state.meta.isValid;
+                  return (
+                    <Field data-invalid={isInvalid}>
+                      <FieldLabel htmlFor={field.name}>
+                        Joining Date
+                      </FieldLabel>
+                      <div className="relative">
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          type="date"
+                          placeholder="Enter your joining date."
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                          aria-invalid={isInvalid}
+                          autoComplete="name"
+                        />
+                      </div>
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
+              </form.Field>
+            </div>
 
-            <Button type="submit">Submit</Button>
+            {/* <Button type="submit">
+              {
+                registrationIPending ? <><Skeleton className="size-4 rounded-md"
+                  data-sidebar="menu-skeleton-icon" /> </> : "Submit"
+              }
+            </Button> */}
+            <Button
+              type="submit"
+              disabled={registrationIPending || form.state.isSubmitting}
+            >
+              {registrationIPending || form.state.isSubmitting
+                ? "Registering..."
+                : "Create account"}
+            </Button>
           </FieldGroup>
         </form>
               <div className="px-5">

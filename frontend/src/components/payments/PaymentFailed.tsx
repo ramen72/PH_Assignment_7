@@ -35,7 +35,7 @@ export default function PaymentFailed() {
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Button variant="outline">
-            <Link href="/asset-purchases">
+            <Link href="/super-admin/asset-purchases">
               Back to Purchases
             </Link>
           </Button>
