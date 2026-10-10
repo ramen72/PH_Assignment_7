@@ -734,14 +734,16 @@ export default function AssetPurchasesPage() {
                             </DropdownMenuTrigger>
 
                             <DropdownMenuContent align="end" className="w-40">
-                              <DropdownMenuItem>
+                              <DropdownMenuItem render={
                                 <Link
-                                  href={`/asset-purchases/${purchase.id}`}
+                                  href={`/super-admin/asset-purchases/${purchase.id}`}
                                   className="flex cursor-pointer items-center"
                                 >
                                   <Eye className="mr-2 size-4" />
                                   View
                                 </Link>
+                              } >
+                                
                               </DropdownMenuItem>
 
                               {purchase.paymentStatus === "PENDING" && (

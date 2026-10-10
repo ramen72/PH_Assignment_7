@@ -1,4 +1,4 @@
-import { createAssetPurchase, getAllAssetPurchases } from "@/api";
+import { createAssetPurchase, getAllAssetPurchases, getSingleAssetPurchaseById } from "@/api";
 import type { AssetPurchaseFilterParams, AssetPurchasePayload } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -28,5 +28,16 @@ export const useGetAllAssetPurchases = (
     queryFn: () => getAllAssetPurchases(params),
 
     placeholderData: (previousData) => previousData,
+  });
+};
+
+// Get single asset
+export const useGetSingleAssetPurchaseById = (assetPurchaseId?: string) => {
+  return useQuery({
+    queryKey: ["asset-purchase", assetPurchaseId],
+
+    queryFn: () => getSingleAssetPurchaseById(assetPurchaseId as string),
+
+    enabled: Boolean(assetPurchaseId),
   });
 };

@@ -26,3 +26,10 @@ export const getAllAssetPurchases = (params?: AssetPurchaseFilterParams) => {
     method: "GET",
   });
 };
+
+// Get single asset Purchase
+export const getSingleAssetPurchaseById = (assetPurchaseId: string) => {
+  return apiClient(`/assetPurchases/${assetPurchaseId}`, {
+    method: "GET",
+  });
+};
