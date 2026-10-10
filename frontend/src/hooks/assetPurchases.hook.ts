@@ -1,4 +1,4 @@
-import { createAssetPurchase, getAllAssetPurchases, getSingleAssetPurchaseById } from "@/api";
+import { createAssetPurchase, deleteAssetPurchaseById, getAllAssetPurchases, getSingleAssetPurchaseById } from "@/api";
 import type { AssetPurchaseFilterParams, AssetPurchasePayload } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -14,6 +14,9 @@ export const useCreateAssetPurchase = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["assets-purchase"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["payment"],
       });
     },
   });
@@ -39,5 +42,26 @@ export const useGetSingleAssetPurchaseById = (assetPurchaseId?: string) => {
     queryFn: () => getSingleAssetPurchaseById(assetPurchaseId as string),
 
     enabled: Boolean(assetPurchaseId),
+  });
+};
+
+// Delete Single asset purchase
+export const useDeleteAssetPurchaseById = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (assetPurchaseId: string) => deleteAssetPurchaseById(assetPurchaseId),
+
+    onSuccess: () => {
+      // Refresh all asset queries
+      queryClient.invalidateQueries({
+        queryKey: ["assets-purchase"],
+      });
+      
+      // Refresh all asset queries
+      queryClient.invalidateQueries({
+        queryKey: ["asset-purchase"],
+      });
+    },
   });
 };

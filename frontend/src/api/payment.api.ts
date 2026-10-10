@@ -6,3 +6,11 @@ export const createBkashPayment = (purchaseId: string) => {
     // body: JSON.stringify(payload),
   });
 };
+
+
+// Get single asset Purchase
+export const getSinglePaymentByAssetPurchaseId = (assetPurchaseId: string) => {
+  return apiClient(`/bkash/${assetPurchaseId}`, {
+    method: "GET",
+  });
+};

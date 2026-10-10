@@ -44,8 +44,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useGetAllAssetPurchases, useCreateBkashPayment } from '@/hooks';
+import { useGetAllAssetPurchases, useCreateBkashPayment, useDeleteAssetPurchaseById } from '@/hooks';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { toast } from "@/components/ui/toast";
 
 /* -------------------------------------------------------------------------- */
 /* Types                                                                      */
@@ -188,11 +189,19 @@ export default function AssetPurchasesPage() {
   const [payingPurchaseId, setPayingPurchaseId] = useState<string | null>(
   null,
 );
+  const [selectedId, setSelectedId] = useState<string | null>(
+  null,
+);
 
   const {
   mutate: createPayment,
   isPending: isPaymentPending,
 } = useCreateBkashPayment();
+
+  const {
+  mutate: deleteAssetPurchase,
+  isPending: isAssetPurchasePending,
+} = useDeleteAssetPurchaseById();
 
   const {
     data,
@@ -229,6 +238,25 @@ export default function AssetPurchasesPage() {
       setPayingPurchaseId(null);
 
       console.error("Failed to create bKash payment:", error);
+    },
+  });
+};
+
+// Handle Delete
+  const handleDelete = (purchaseId: string) => {
+  setSelectedId(purchaseId);
+
+  deleteAssetPurchase(purchaseId, {
+    onSuccess: (response) => {
+      setSelectedId(null);
+      toast.add({
+        title:"Asset Purchase is deleded successfull."
+      })
+    },
+
+    onError: (error) => {
+      console.error("Failed to create bKash payment:", error);
+      setSelectedId(null);
     },
   });
 };
@@ -769,6 +797,31 @@ export default function AssetPurchasesPage() {
                                   )}
                                 </DropdownMenuItem>
                               )}
+
+                              {/* Dlete Asset Purchase */}
+                              {/* {purchase.paymentStatus === "PENDING" && (
+                                <DropdownMenuItem
+                                  disabled={
+                                    isAssetPurchasePending &&
+                                    selectedId === purchase.id
+                                  }
+                                  onClick={() => handleDelete(purchase.id)}
+                                  className="cursor-pointer"
+                                >
+                                  {isAssetPurchasePending &&
+                                    selectedId === purchase.id ? (
+                                    <>
+                                      <Loader2 className="mr-2 size-4 animate-spin" />
+                                      Processing...
+                                    </>
+                                  ) : (
+                                    <>
+                                      <CreditCard className="mr-2 size-4" />
+                                      Delete
+                                    </>
+                                  )}
+                                </DropdownMenuItem>
+                              )} */}
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </div>

@@ -44,7 +44,7 @@ export function DashboardSidebar({ role }: { role: UserRole }) {
       <SidebarContent>
         {routes.map((item) => (
           <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+            <SidebarGroupLabel className={`bg-blue-100/75 font-bold text-[#eb4e1f] text-[17px]`}>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {item.items.map((item) => (

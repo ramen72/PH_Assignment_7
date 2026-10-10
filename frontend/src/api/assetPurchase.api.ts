@@ -33,3 +33,10 @@ export const getSingleAssetPurchaseById = (assetPurchaseId: string) => {
     method: "GET",
   });
 };
+
+// Get single asset Purchase
+export const deleteAssetPurchaseById = (assetPurchaseId: string) => {
+  return apiClient(`/assetPurchases/${assetPurchaseId}`, {
+    method: "DELETE",
+  });
+};
