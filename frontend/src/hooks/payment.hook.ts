@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createBkashPayment, getSingleAssetPurchaseById, getSinglePaymentByAssetPurchaseId } from "@/api";
+import { createBkashPayment, getAllPayments, getSingleAssetPurchaseById, getSinglePaymentByAssetPurchaseId, getSinglePaymentsById } from "@/api";
+import { PaymentQueryParams } from "@/types";
 
 export const useCreateBkashPayment  = () => {
   const queryClient = useQueryClient();
@@ -15,6 +16,26 @@ export const useCreateBkashPayment  = () => {
         queryKey: ["assets"],
       });
     },
+  });
+};
+
+// Get all Payment
+export const useGetAllPayment = () => {
+  return useQuery({
+    queryKey: ["payments"],
+    queryFn: () => getAllPayments()
+  });
+};
+
+
+// Get single Payment By Id
+export const useGetSinglePaymentsById = (paymentId?: string) => {
+  return useQuery({
+    queryKey: ["payment", paymentId],
+
+    queryFn: () => getSinglePaymentsById(paymentId as string),
+
+    enabled: Boolean(paymentId),
   });
 };
 
