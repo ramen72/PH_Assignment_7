@@ -27,12 +27,6 @@ export interface PaymentQueryParams {
   limit?: number;
 }
 
-export type PaymentStatus =
-  | "PENDING"
-  | "PAID"
-  | "FAILED"
-  | "CANCELLED"
-  | "REFUNDED";
 
 export interface Payment {
   id: string;
@@ -42,7 +36,7 @@ export interface Payment {
   currency: string;
   provider: PaymentProvider | string;
   transactionId: string | null;
-  paymentStatus: PaymentStatus;
+  paymentStatus: string;
   paymentUrl: string | null;
   paidAt: string | null;
   createdAt: string;
