@@ -254,7 +254,7 @@ export default function AssetAssignmentsPage() {
                             }
                           ></Button>
 
-                          {!assignment.returnedAt && (
+                          {/* {!assignment.returnedAt && (
                             <Button
                               size="icon"
                               variant="outline"
@@ -263,6 +263,22 @@ export default function AssetAssignmentsPage() {
                               render={
                                 <Link
                                 href={`/super-admin/asset-assignments/${assignment.id}?action=return`}
+                                className="flex"
+                              >
+                                <RotateCcw className="size-4" />
+                              </Link>
+                              }
+                            ></Button>
+                          )} */}
+                          {!assignment.returnedAt && (
+                            <Button
+                              size="icon"
+                              variant="outline"
+                              title="Return asset"
+                              nativeButton={false}
+                              render={
+                                <Link
+                                href={`/super-admin/asset-assignments/${assignment.id}/return`}
                                 className="flex"
                               >
                                 <RotateCcw className="size-4" />
