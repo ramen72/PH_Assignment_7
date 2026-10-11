@@ -2,6 +2,8 @@
 
 import { CheckCircle2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 export default function PaymentSuccess() {
   const searchParams = useSearchParams();
@@ -26,6 +28,13 @@ export default function PaymentSuccess() {
             Payment ID: {paymentId}
           </p>
         )}
+        <Button variant="outline" nativeButton={false} className={"mt-2"} render={<Link href="/super-admin/asset-purchases">
+            Back to Purchases
+          </Link>}>
+          
+        </Button>
+      </div>
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
       </div>
     </div>
   );
