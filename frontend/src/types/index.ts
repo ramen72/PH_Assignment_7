@@ -1,5 +1,6 @@
 export * from "./api.type";
 export * from "./asset.type";
+export * from "./assetAssignment.type";
 export * from "./assetPurchase.type";
 export * from "./auth.type";
 export * from "./brand.type";

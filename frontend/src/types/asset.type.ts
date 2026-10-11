@@ -1,5 +1,3 @@
-import { Brand } from "./brand.type";
-
 export type AssetCondition =
   | "NEW"
   | "GOOD"

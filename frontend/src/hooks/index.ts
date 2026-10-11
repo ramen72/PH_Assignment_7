@@ -1,3 +1,4 @@
+export * from "./assetAssignment.hooks";
 export * from "./assetPurchases.hook";
 export * from "./assets.hook";
 export * from "./assetsCategories.hook";

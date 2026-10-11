@@ -17,6 +17,10 @@ export const userLogin = (payload: LoginPayload) => {
   return apiClient("/auth/login", { method: "POST", body: payload });
 };
 
+export const getAllUsers = () => {
+  return apiClient("/auth/allUsers", { method: "GET" });
+};
+
 export const getMe = () => {
   return apiClient("/auth/getMe", { method: "GET" });
 };

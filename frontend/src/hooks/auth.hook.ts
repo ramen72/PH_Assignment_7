@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  getAllUsers,
   getMe,
   googleOAuth,
   userLogin,
@@ -41,6 +42,14 @@ export const useLogout = () => {
 export const useGoogleOAuth = () => {
   return useMutation({
     mutationFn: googleOAuth,
+  });
+};
+
+export const useGetAllUsers = () => {
+  return useQuery({
+    queryKey: ["users"],
+    queryFn: getAllUsers,
+    retry: false,
   });
 };
 

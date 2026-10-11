@@ -227,40 +227,6 @@ const CreateAssetForm = () => {
             onSubmit: createAssetSchema,
         },
 
-        // onSubmit: async ({ value }) => {
-        //     const payload = {
-        //         assetTag: value.assetTag,
-        //         name: value.name,
-        //         categoryId: value.categoryId,
-        //         brand: value.brand,
-        //         model: value.model,
-        //         serialNumber: value.serialNumber,
-        //         description: value.description,
-        //         purchasePrice: value.purchasePrice,
-        //         purchaseDate: value.purchaseDate,
-        //         warrantyExpiry: value.warrantyExpiry,
-        //         condition: value.condition,
-        //         location: value.location,
-        //         vendorId: value.vendorId,
-        //     };
-
-        //     createAsset(payload, {
-        //         onSuccess: (value) => {
-        //             form.reset();
-        //             toast.add({
-        //                 type: "success",
-        //                 title: "Asset created successfully",
-        //             });
-        //         },
-
-        //         onError: (error) => {
-        //             console.error(
-        //                 "Create asset failed:",
-        //                 error,
-        //             );
-        //         },
-        //     });
-        // },
         onSubmit: async ({ value }) => {
             // console.log("Submitted values:", value);
 
