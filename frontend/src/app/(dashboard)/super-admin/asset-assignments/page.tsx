@@ -50,7 +50,7 @@ export default function AssetAssignmentsPage() {
     });
 
   const assignments = data?.data ?? [];
-  console.log(assignments)
+  
   const meta = data?.meta;
   
   return (
@@ -253,23 +253,6 @@ export default function AssetAssignmentsPage() {
                             </Link>
                             }
                           ></Button>
-
-                          {/* {!assignment.returnedAt && (
-                            <Button
-                              size="icon"
-                              variant="outline"
-                              title="Return asset"
-                              nativeButton={false}
-                              render={
-                                <Link
-                                href={`/super-admin/asset-assignments/${assignment.id}?action=return`}
-                                className="flex"
-                              >
-                                <RotateCcw className="size-4" />
-                              </Link>
-                              }
-                            ></Button>
-                          )} */}
                           {!assignment.returnedAt && (
                             <Button
                               size="icon"
