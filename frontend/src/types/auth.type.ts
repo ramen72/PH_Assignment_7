@@ -1,4 +1,5 @@
 import type { AssetCondition } from "./asset.type";
+import type { AssetAssignment } from "./assetAssignment.type";
 import type { UserRole, UserStatus } from "./user.type";
 
 export interface AuthResponse {
@@ -93,20 +94,6 @@ export interface Profile {
   createdAt: string
   updatedAt: string
 }
-
-export interface AssetAssignment {
-  id: string
-  assetId: string
-  employeeId: string
-  assignedById: string
-  assignedAt: string
-  returnedAt: string
-  returnCondition: AssetCondition
-  remarks: string
-  createdAt: string
-  updatedAt: string
-}
-
 export interface AssignedAsset {
   id: string
   assetId: string

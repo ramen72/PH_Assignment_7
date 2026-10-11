@@ -497,7 +497,7 @@ console.log("Extracted payment:", payment);
                     Paid At
                   </p>
                   <p className="text-sm font-medium text-slate-900">
-                    {formatDate(payment.paidAt)}
+                    { payment.paidAt && formatDate(payment.paidAt)}
                   </p>
                 </div>
 

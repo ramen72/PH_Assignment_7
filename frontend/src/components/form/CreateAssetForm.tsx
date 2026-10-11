@@ -44,7 +44,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-import type { Category, Vendor } from "@/types";
+import type { Category, VendorResponse } from "@/types";
 import { toast } from "../ui/toast";
 
 const CreateAssetForm = () => {
@@ -491,7 +491,7 @@ const CreateAssetForm = () => {
                                                                     }
                                                                 >
                                                                     {vendorsData?.data?.find(
-                                                                        (vendor: Vendor) =>
+                                                                        (vendor: VendorResponse) =>
                                                                             vendor.id === field.state.value,
                                                                     )?.name}
                                                                 </SelectValue>
@@ -499,7 +499,7 @@ const CreateAssetForm = () => {
 
                                                             <SelectContent>
                                                                 {vendorsData?.data?.map(
-                                                                    (vendor: Vendor) => (
+                                                                    (vendor: VendorResponse) => (
                                                                         <SelectItem
                                                                             key={vendor.id}
                                                                             value={vendor.id}

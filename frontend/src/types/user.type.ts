@@ -2,7 +2,7 @@ export type UserRole = "SUPER_ADMIN" | "ADMIN" | "MANAGER" | "EMPLOYEE";
 
 export type UserStatus = "ACTIVE" | "BLOCKED" | "DELETED";
 
-export interface User {
+export interface RequestUser {
   id: string;
   name: string;
   email: string;

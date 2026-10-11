@@ -40,7 +40,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { PaymentStatusBadge } from "@/components/payments/payment-status-badge";
 import { useGetAllPayment } from "@/hooks";
-import { Payment } from "@/types";
+import type { Payment } from "@/types";
 // import { useGetAllPayments } from "@/hooks/payment.hook";
 // import type { Payment } from "@/types/payment.types";
 
@@ -155,7 +155,7 @@ function PaymentSkeleton() {
     <div className="space-y-3">
       {Array.from({ length: 5 }).map((_, index) => (
         <div
-          key={index}
+          key={index && index}
           className="flex items-center gap-4 rounded-xl border p-4"
         >
           <Skeleton className="size-10 rounded-xl" />
@@ -600,7 +600,7 @@ export default function PaymentsPage() {
 
                 {/* Mobile and tablet cards */}
                 <div className="grid grid-cols-1 gap-3 p-4 sm:p-5 lg:hidden">
-                  {filteredPayments.map((payment) => (
+                  {filteredPayments.map((payment:Payment) => (
                     <article
                       key={payment.id}
                       className="rounded-2xl border border-slate-200 bg-white p-4 transition-shadow hover:shadow-md sm:p-5"
@@ -657,7 +657,8 @@ export default function PaymentsPage() {
                               Paid at
                             </p>
                             <p className="mt-1 text-sm font-medium text-slate-700">
-                              {formatDate(payment.paidAt)}
+                              { payment?.paidAt &&
+                              formatDate(payment?.paidAt)}
                             </p>
                           </div>
                         </div>

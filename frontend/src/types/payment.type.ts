@@ -28,7 +28,7 @@ export interface PaymentQueryParams {
 }
 
 
-export interface Payment {
+export interface IPayment {
   id: string;
   userId: string;
   purchaseId: string;
@@ -38,7 +38,7 @@ export interface Payment {
   transactionId: string | null;
   paymentStatus: string;
   paymentUrl: string | null;
-  paidAt: string | null;
+  paidAt: string | undefined;
   createdAt: string;
   updatedAt: string;
 }
@@ -53,6 +53,6 @@ export interface PaymentMeta {
 export interface PaymentsResponse {
   success: boolean;
   message: string;
-  data: Payment[];
+  data: IPayment[];
   meta?: PaymentMeta;
 }

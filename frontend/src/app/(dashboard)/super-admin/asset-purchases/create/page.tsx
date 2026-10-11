@@ -39,7 +39,7 @@ import {
     useGetAllAssets,
     useGetAllVendors,
 } from "@/hooks";
-import type { Asset, AssetPurchasePayload, Vendor } from "@/types";
+import type { Asset, AssetPurchasePayload, VendorResponse } from "@/types";
 import { createPurchaseSchema } from "@/validation";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 
@@ -66,7 +66,7 @@ export default function CreateAssetPurchasePage() {
 
     // Adjust these according to your actual API response shape.
     const assets: Asset[] = assetsData?.data ?? [];
-    const vendors: Vendor[] = vendorsData?.data ?? [];
+    const vendors: VendorResponse[] = vendorsData?.data ?? [];
 
     const getTodayDate = () => {
     const today = new Date();
@@ -196,77 +196,6 @@ export default function CreateAssetPurchasePage() {
 
                         <CardContent className="space-y-6">
                             <div className="grid gap-6 md:grid-cols-2">
-                                {/* Asset */}
-                                {/* <form.Field
-                                    name="assetId"
-                                    validators={{
-                                        onChange: ({ value }) => {
-                                            const result =
-                                                createPurchaseSchema.shape.assetId.safeParse(
-                                                    value,
-                                                );
-
-                                            return result.success
-                                                ? undefined
-                                                : result.error.issues[0]
-                                                      ?.message;
-                                        },
-                                    }}
-                                >
-                                    {(field) => (
-                                        <div className="space-y-2">
-                                            <label htmlFor="" className="text-sm font-medium">
-                                                Asset{" "}
-                                                <span className="text-destructive">
-                                                    *
-                                                </span>
-                                            </label>
-
-                                            <Select
-                                                value={field.state.value}
-                                                onValueChange={(value) => {
-                                                        if (value !== null) {
-                                                            field.handleChange(value);
-                                                        }
-                                                    }}
-                                                disabled={assetsLoading}
-                                            >
-                                                <SelectTrigger className="w-full">
-                                                    <SelectValue
-                                                        placeholder={
-                                                            assetsLoading
-                                                                ? "Loading assets..."
-                                                                : "Select asset"
-                                                        }
-                                                    />
-                                                </SelectTrigger>
-
-                                                <SelectContent>
-                                                    {assets.map((asset) => (
-                                                        <SelectItem
-                                                            key={asset.id}
-                                                            value={asset.id}
-                                                        >
-                                                            {asset.assetTag} -{" "}
-                                                            {asset.name}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-
-                                            {field.state.meta.errors.length >
-                                                0 && (
-                                                <p className="text-xs text-destructive">
-                                                    {
-                                                        field.state.meta
-                                                            .errors[0]
-                                                    }
-                                                </p>
-                                            )}
-                                        </div>
-                                    )}
-                                </form.Field> */}
-
                                 <form.Field
                                     name="assetId"
                                     validators={{
@@ -379,7 +308,7 @@ export default function CreateAssetPurchasePage() {
                                                             }
                                                         >
                                                             {vendorsData?.data?.find(
-                                                                (vendor: Vendor) =>
+                                                                (vendor: VendorResponse) =>
                                                                     vendor.id === field.state.value,
                                                             )?.name}
                                                         </SelectValue>
@@ -387,7 +316,7 @@ export default function CreateAssetPurchasePage() {
 
                                                     <SelectContent>
                                                         {vendorsData?.data?.map(
-                                                            (vendor: Vendor) => (
+                                                            (vendor: VendorResponse) => (
                                                                 <SelectItem
                                                                     key={vendor.id}
                                                                     value={vendor.id}
@@ -808,111 +737,6 @@ export default function CreateAssetPurchasePage() {
                         </Button>
                     </div>
                 </div>
-
-                {/* Summary */}
-                {/* <div className="lg:col-span-1">
-                    <Card className="sticky top-6">
-                        <CardHeader>
-                            <CardTitle>Purchase Summary</CardTitle>
-                            <CardDescription>
-                                Review the purchase before submitting.
-                            </CardDescription>
-                        </CardHeader>
-
-                        <CardContent className="space-y-5">
-                            <div className="flex items-center gap-3">
-                                <div className="flex size-10 items-center justify-center rounded-lg bg-muted">
-                                    <Package className="size-5 text-muted-foreground" />
-                                </div>
-
-                                <div className="min-w-0">
-                                    <p className="text-xs text-muted-foreground">
-                                        Asset
-                                    </p>
-
-                                    <p className="truncate text-sm font-medium">
-                                        {assets.find(
-                                            (asset) =>
-                                                asset.id ===
-                                                form.getFieldValue(
-                                                    "assetId",
-                                                ),
-                                        )?.name ?? "Not selected"}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center gap-3">
-                                <div className="flex size-10 items-center justify-center rounded-lg bg-muted">
-                                    <Store className="size-5 text-muted-foreground" />
-                                </div>
-
-                                <div className="min-w-0">
-                                    <p className="text-xs text-muted-foreground">
-                                        Vendor
-                                    </p>
-
-                                    <p className="truncate text-sm font-medium">
-                                        {vendors.find(
-                                            (vendor) =>
-                                                vendor.id ===
-                                                form.getFieldValue(
-                                                    "vendorId",
-                                                ),
-                                        )?.name ?? "Not selected"}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <Separator />
-
-                            <div className="space-y-3">
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-muted-foreground">
-                                        Quantity
-                                    </span>
-
-                                    <span className="font-medium">
-                                        {quantity || 0}
-                                    </span>
-                                </div>
-
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-muted-foreground">
-                                        Unit Price
-                                    </span>
-
-                                    <span className="font-medium">
-                                        ৳
-                                        {Number(
-                                            unitPrice || 0,
-                                        ).toLocaleString("en-BD")}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <Separator />
-
-                            <div className="rounded-lg bg-muted/60 p-4">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm font-medium"> htmlFor={""}
-                                        Total Amount
-                                    </span>
-
-                                    <span className="text-xl font-bold">
-                                        ৳
-                                        {totalAmount.toLocaleString("en-BD", {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2,
-                                        })}
-                                    </span>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div> */}
-
-                {/* ================= */}
                 {/* Summary */}
                 <div className="lg:col-span-1">
                     <form.Subscribe
