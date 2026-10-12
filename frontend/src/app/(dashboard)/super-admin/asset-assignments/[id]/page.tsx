@@ -22,6 +22,7 @@ import {
   Phone,
   Building2,
   BadgeCheck,
+  Trash2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -31,11 +32,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useGetAssetAssignmentById } from "@/hooks";
+import { useDeleteAssetAssignment, useGetAssetAssignmentById } from "@/hooks";
 import type { AssetAssignment } from "@/types";
-
-// import { useGetAssetAssignmentById } from "@/hooks/assetAssignment.hooks";
-// import type { AssetAssignment } from "@/types/assetAssignment.types";
+import { toast } from "@/components/ui/toast";
 
 function formatDate(value?: string | null) {
   if (!value) return "Not available";
@@ -129,6 +128,49 @@ export default function SingleAssetAssignmentPage() {
   const router = useRouter();
   const assignmentId = params.id;
 
+  const deleteAssignmentMutation = useDeleteAssetAssignment();
+
+  const handleDeleteAssignment = () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this asset assignment?",
+    );
+
+    if (!confirmed) return;
+
+    deleteAssignmentMutation.mutate(assignmentId, {
+      onSuccess: (response) => {
+        toast.add({
+          type: "success",
+          title: response.message || "Asset assignment deleted successfully!",
+        });
+
+        router.push("/super-admin/asset-assignments");
+      },
+
+      onError: (error: unknown) => {
+        console.error("Failed to delete assignment:", error);
+
+        const errorMessage =
+          typeof error === "object" &&
+            error !== null &&
+            "data" in error &&
+            typeof error.data === "object" &&
+            error.data !== null &&
+            "message" in error.data &&
+            typeof error.data.message === "string"
+            ? error.data.message
+            : error instanceof Error
+              ? error.message
+              : "Failed to delete asset assignment.";
+
+        toast.add({
+          type: "error",
+          title: errorMessage,
+        });
+      },
+    });
+  };
+
   const {
     data: response,
     isLoading,
@@ -140,13 +182,13 @@ export default function SingleAssetAssignmentPage() {
   // Supports an API response shaped as { data: assignment }.
   const assignment = (
     response as
-      | { data?: AssetAssignment }
-      | AssetAssignment
-      | undefined
+    | { data?: AssetAssignment }
+    | AssetAssignment
+    | undefined
   ) && (
-    (response as { data?: AssetAssignment })?.data ??
-    (response as AssetAssignment)
-  );
+      (response as { data?: AssetAssignment })?.data ??
+      (response as AssetAssignment)
+    );
 
   if (isLoading) {
     return (
@@ -383,8 +425,8 @@ export default function SingleAssetAssignmentPage() {
                       .map((part) => part[0])
                       .join("")
                       .toUpperCase() || (
-                      <UserRound className="size-6" />
-                    )}
+                        <UserRound className="size-6" />
+                      )}
                   </div>
 
                   <div className="min-w-0">
@@ -590,6 +632,23 @@ export default function SingleAssetAssignmentPage() {
               <ArrowLeft className="size-4" />
               All assignments
             </Link>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleDeleteAssignment}
+              disabled={deleteAssignmentMutation.isPending}
+              className="w-full rounded-xl"
+            >
+              {deleteAssignmentMutation.isPending ? (
+                <LoaderCircle className="mr-2 size-4 animate-spin" />
+              ) : (
+                <Trash2 className="mr-2 size-4" />
+              )}
+
+              {deleteAssignmentMutation.isPending
+                ? "Deleting..."
+                : "Delete Assignment"}
+            </Button>
           </aside>
         </div>
       </div>
