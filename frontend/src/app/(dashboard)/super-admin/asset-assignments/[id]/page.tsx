@@ -162,7 +162,6 @@ export default function SingleAssetAssignmentPage() {
             : error instanceof Error
               ? error.message
               : "Failed to delete asset assignment.";
-
         toast.add({
           type: "error",
           title: errorMessage,
