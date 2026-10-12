@@ -260,10 +260,21 @@ const CreateAssetForm = () => {
 
                 onError: (error) => {
                     console.error("Create asset failed:", error);
-
+                    const errorMessage =
+                        typeof error === "object" &&
+                            error !== null &&
+                            "data" in error &&
+                            typeof error.data === "object" &&
+                            error.data !== null &&
+                            "message" in error.data &&
+                            typeof error.data.message === "string"
+                            ? error.data.message
+                            : error instanceof Error
+                                ? error.message
+                                : "Failed to create asset";
                     toast.add({
                         type: "error",
-                        title: "Failed to create asset",
+                        title: errorMessage,
                     });
                 },
             });

@@ -4,6 +4,7 @@ import { AssetRequestFormValues, assetRequestSchema } from "@/validation";
 import { useCreateAssetRequest } from "@/hooks";
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
+import { toast } from "../ui/toast";
 
 export function AssetRequestForm() {
   const router = useRouter();
@@ -34,6 +35,22 @@ export function AssetRequestForm() {
         router.push("/employee/asset-requests");
       } catch (error) {
         console.error("Failed to create asset request:", error);
+        const errorMessage =
+          typeof error === "object" &&
+            error !== null &&
+            "data" in error &&
+            typeof error.data === "object" &&
+            error.data !== null &&
+            "message" in error.data &&
+            typeof error.data.message === "string"
+            ? error.data.message
+            : error instanceof Error
+              ? error.message
+              : "Failed to create asset request.";
+        toast.add({
+          type: "error",
+          title: errorMessage,
+        });
       }
     },
   });

@@ -56,11 +56,21 @@ const LoginForm = () => {
         },
         onError: (error) => {
           console.log(error);
+          const errorMessage =
+            typeof error === "object" &&
+              error !== null &&
+              "data" in error &&
+              typeof error.data === "object" &&
+              error.data !== null &&
+              "message" in error.data &&
+              typeof error.data.message === "string"
+              ? error.data.message
+              : error instanceof Error
+                ? error.message
+                : "Failed to Login due to authentication.";
           toast.add({
-            title: "Authorization Failed",
-            description:
-              error.message || "Something went wrong. Please try again.",
-            type: "Success",
+            type: "error",
+            title: errorMessage,
           });
         },
       });

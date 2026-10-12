@@ -123,12 +123,23 @@ const form = useForm({
         );
       },
 
-      onError: (err) => {
+      onError: (error) => {
+        const errorMessage =
+          typeof error === "object" &&
+            error !== null &&
+            "data" in error &&
+            typeof error.data === "object" &&
+            error.data !== null &&
+            "message" in error.data &&
+            typeof error.data.message === "string"
+            ? error.data.message
+            : error instanceof Error
+              ? error.message
+              : "Registration Failure...!";
         toast.add({
-          title: "Registration Failure",
-          description:
-            err.message || "Something went wrong. Please try again",
           type: "error",
+          title: "Registration Failure",
+          description: errorMessage,
         });
       },
     });
