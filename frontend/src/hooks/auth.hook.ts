@@ -65,6 +65,10 @@ export const useLogout = () => {
     mutationFn: userLogout,
     onSuccess: () => {
       queryClient.removeQueries({
+        queryKey: ["users"],
+      });
+      
+      queryClient.removeQueries({
         queryKey: ["user"],
       });
     },
