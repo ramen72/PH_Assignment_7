@@ -488,7 +488,7 @@ const CreateAssetForm = () => {
                                                                     field.handleChange(value);
                                                                 }
                                                             }}
-                                                            disabled={isCategoriesLoading}
+                                                            disabled={isVendorLoading}
                                                         >
                                                             <SelectTrigger
                                                                 className="h-11 rounded-xl border-slate-200 bg-slate-50/50 transition-all hover:bg-white focus:ring-2 focus:ring-indigo-500/20"
@@ -496,7 +496,7 @@ const CreateAssetForm = () => {
                                                             >
                                                                 <SelectValue
                                                                     placeholder={
-                                                                        isCategoriesLoading
+                                                                        isVendorLoading
                                                                             ? "Loading vendor..."
                                                                             : "Select vendor"
                                                                     }

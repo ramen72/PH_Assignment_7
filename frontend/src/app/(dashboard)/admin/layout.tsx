@@ -6,7 +6,11 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <RoleGuard roles={["ADMIN", "SUPER_ADMIN"]}>
       {/* biome-ignore lint/a11y/useValidAriaRole: `role` is a component prop, not an ARIA role. */}
-      <DashboardShell role="ADMIN">{children}</DashboardShell>
+      <DashboardShell role="ADMIN">
+        <div className="p-2">
+          {children}
+        </div>
+        </DashboardShell>
     </RoleGuard>
   );
 };
