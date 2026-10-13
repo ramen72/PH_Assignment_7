@@ -1,5 +1,4 @@
-import { AssetRequestForm } from '@/components/form/asset-request-form';
-import React from 'react';
+import AssetRequestForm from '@/components/form/asset-request-form';
 
 const page = () => {
     return (

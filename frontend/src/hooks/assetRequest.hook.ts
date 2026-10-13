@@ -5,9 +5,9 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import type { AssetRequestFilterParams, AssetRequestPayload, RejectAssetRequestPayload, UpdateAssetRequestPayload } from "@/types";
+import type { AssetRequestFilterParams, AssetRequestPayload, UpdateAssetRequestPayload } from "@/types";
 import { approveAssetRequest, cancelAssetRequest, createAssetRequest, deleteAssetRequestById, getAllAssetRequests, getMyAssetRequests, getSingleAssetRequestById, rejectAssetRequest, updateAssetRequest } from "@/api";
-import { RejectAssetRequestInput } from "@/validation";
+import type { RejectAssetRequestInput } from "@/validation";
 
 
 export const assetRequestKeys = {
@@ -93,71 +93,6 @@ export function useUpdateAssetRequest() {
     },
   });
 }
-
-// export function useApproveAssetRequest() {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: (id: string) =>
-//       approveAssetRequest(id),
-
-//     onSuccess: async () => {
-//       await queryClient.invalidateQueries({
-//         queryKey: assetRequestKeys.all,
-//       });
-//     },
-//   });
-// }
-
-// export function useCancelAssetRequest() {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: (id: string) =>
-//       cancelAssetRequest(id),
-
-//     onSuccess: async () => {
-//       await queryClient.invalidateQueries({
-//         queryKey: assetRequestKeys.all,
-//       });
-//     },
-//   });
-// }
-
-// export function useRejectAssetRequest() {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: ({
-//       id,
-//       payload,
-//     }: {
-//       id: string;
-//       payload: RejectAssetRequestPayload;
-//     }) => rejectAssetRequest(id, payload),
-
-//     onSuccess: async () => {
-//       await queryClient.invalidateQueries({
-//         queryKey: assetRequestKeys.all,
-//       });
-//     },
-//   });
-// }
-
-// export function useDeleteAssetRequestById() {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: (id: string) =>
-//       deleteAssetRequestById(id),
-
-//     onSuccess: async () => {
-//       await queryClient.invalidateQueries({
-//         queryKey: assetRequestKeys.all,
-//       });
-//     },
-//   });
-// }
 
 export function useAssetRequestAction() {
   const queryClient = useQueryClient();

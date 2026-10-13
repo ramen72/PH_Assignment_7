@@ -28,14 +28,10 @@ const LoginForm = () => {
   const form = useForm({
     defaultValues: {
       email: "superadmin@gmail.com",
-      // email:"testeradmin@gmail.com",
+      // email:"admin@gmail.com",
       // email: "ramentusuka@gmail.com",
       // email: "employee@gmail.com",
       password: "Super@admin321",
-
-      // password: "Tester@admin321"
-
-      // password: "X}A0n_SZ8o=[",
     },
     validators: {
       onSubmit: LoginZodSchema,

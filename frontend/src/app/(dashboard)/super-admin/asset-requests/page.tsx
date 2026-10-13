@@ -7,7 +7,6 @@ import {
   RefreshCw,
   Plus,
   Eye,
-  Pencil,
   Trash2,
   CheckCircle2,
   XCircle,
@@ -19,7 +18,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import type { AssetRequestResponse, AssetRequestStatus } from "@/types";
-import { useAssetRequestAction, useGetMyAssetRequests } from "@/hooks";
+import { useAssetRequestAction, useGetAllAssetRequests} from "@/hooks";
 import { toast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 
@@ -98,16 +97,22 @@ export default function AssetRequestsPage() {
     sortOrder: "desc" as const,
   };
 
-  const { data, isPending, isError, error, refetch, isFetching } =
-    useGetMyAssetRequests(params);
+const {
+  data: allRequests,
+  isPending,
+  isError,
+  error,
+  refetch,
+  isFetching,
+} = useGetAllAssetRequests(params);
+
+const requests = allRequests?.data ?? [];
+const meta = allRequests?.meta;
+
+const total = meta?.total ?? requests.length;
+const totalPages = meta?.totalPages ?? 1;
 
   const actions = useAssetRequestAction();
-
-  const requests = data?.data ?? [];
-  const meta = data?.meta;
-
-  const total = meta?.total ?? requests.length;
-  const totalPages = meta?.totalPages ?? 1;
 
   // These cards summarize the currently fetched page.
   const pending = requests.filter((r: AssetRequestResponse) => r.status === "PENDING").length;
@@ -339,26 +344,6 @@ export default function AssetRequestsPage() {
                             >
                               <Eye size={17} />
                             </Button>
-
-                            {request.status === "PENDING" && (
-                              <Button
-                                variant={"outline"}
-                                nativeButton={false}
-                                render={<Link
-                                  href={`/super-admin/asset-requests/${request.id}`}
-                                  title="Edit request"
-                                  aria-label="Edit request"
-                                  className="rounded-lg p-2 text-slate-500 hover:bg-orange-50 hover:text-orange-600"
-                                >
-                                  <Pencil size={17} />
-                                </Link>}
-                                className="rounded-lg p-2 text-emerald-600 hover:bg-emerald-50 disabled:opacity-50"
-                              >
-                              </Button>
-
-
-                            )}
-
                             {request.status === "PENDING" && (
                               <>
                                 <Button
@@ -438,13 +423,112 @@ export default function AssetRequestsPage() {
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm"
           >
-            {/* Background overlay */}
-            <button
-              type="button"
-              aria-label="Close request details"
-              className="absolute inset-0 cursor-default bg-slate-950/50 backdrop-blur-sm"
-              onClick={() => setSelected(null)}
-            />
+            {selected && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                {/* Background overlay */}
+                <button
+                  type="button"
+                  aria-label="Close request details"
+                  className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm"
+                  onClick={() => setSelected(null)}
+                />
+
+                {/* Modal content */}
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="request-detail-title"
+                  className="relative z-10 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h2
+                        id="request-detail-title"
+                        className="text-xl font-bold text-slate-900"
+                      >
+                        Request details
+                      </h2>
+
+                      <p className="mt-1 break-all text-xs text-slate-400">
+                        ID: {selected.id}
+                      </p>
+                    </div>
+
+                    <Button
+                      type="button"
+                      onClick={() => setSelected(null)}
+                      aria-label="Close details"
+                      className="rounded-lg p-2 hover:bg-slate-100"
+                    >
+                      <X size={19} />
+                    </Button>
+                  </div>
+
+                  <div className="mt-6 space-y-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-sm text-slate-500">Status</span>
+                      <StatusBadge status={selected.status} />
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-slate-500">Employee</p>
+                      <p className="mt-1 font-medium">
+                        {selected.employee?.name ?? "Unknown"}
+                      </p>
+                      <p className="text-sm text-slate-500">
+                        {selected.employee?.email ?? selected.employeeId}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-slate-500">Category</p>
+                      <p className="mt-1 font-medium">
+                        {selected.category?.name ?? "Unknown"}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-slate-500">Requested asset</p>
+                      <p className="mt-1 font-medium">
+                        {selected.requestedAsset?.name ?? "Not specified"}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-slate-500">Quantity</p>
+                      <p className="mt-1 font-medium">{selected.quantity}</p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-slate-500">Reason</p>
+                      <p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-slate-700">
+                        {selected.reason || "No reason provided"}
+                      </p>
+                    </div>
+
+                    {selected.rejectionReason && (
+                      <div className="rounded-xl bg-rose-50 p-3">
+                        <p className="text-xs font-semibold text-rose-700">
+                          Rejection reason
+                        </p>
+                        <p className="mt-1 text-sm text-rose-800">
+                          {selected.rejectionReason}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <Button
+                    type="button"
+                    onClick={() => setSelected(null)}
+                    className="mt-6 w-full rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            )}
+
             <div
               role="dialog"
               aria-modal="true"
