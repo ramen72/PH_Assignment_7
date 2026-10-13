@@ -6,6 +6,7 @@ export * from "./assetRequest.type";
 export * from "./auth.type";
 export * from "./brand.type";
 export * from "./category.type";
+export * from "./maintenanceRecords.type";
 export * from "./payment.type";
 export * from "./user.type";
 export * from "./vendor.type";
