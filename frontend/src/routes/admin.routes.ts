@@ -47,25 +47,8 @@ export const adminRoutes = [
     title: "Operations",
     items: [
       {
-        title: "Maintenance",
-        url: `${prefix}/maintenance-records`,
-      },
-      {
         title: "Users",
         url: `${prefix}/users`,
-      },
-    ],
-  },
-  {
-    title: "System & Logs",
-    items: [
-      {
-        title: "Audit Logs",
-        url: `${prefix}/audit-logs`,
-      },
-      {
-        title: "Notifications",
-        url: `${prefix}/notifications`,
       },
     ],
   },
