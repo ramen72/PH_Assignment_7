@@ -1,4 +1,3 @@
-import Logo from "@/assets/svg/Logo";
 import VerifyAccountForm from "@/components/form/verify-account-form";
 import Image from "next/image";
 
@@ -12,7 +11,15 @@ export default function VerifyAccountPage() {
         <div className="flex justify-center gap-2 md:justify-start">
           <Link href="/" className="flex items-center gap-2 font-medium">
             <div className="flex items-center gap-2">
-              <Logo />
+              <Link href="/" className="flex items-center gap-1">
+                <Image
+                  src="/logo.png"
+                  alt="Logo"
+                  width={60}
+                  height={60}
+                  loading="eager"
+                />
+              </Link>
               <span>NovoSoft</span>
             </div>
           </Link>

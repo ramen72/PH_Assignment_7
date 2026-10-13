@@ -46,10 +46,10 @@ export const superAdminRoutes = [
   {
     title: "Operations",
     items: [
-      {
-        title: "Maintenance",
-        url: `${prefix}/maintenance-records`,
-      },
+      // {
+      //   title: "Maintenance",
+      //   url: `${prefix}/maintenance-records`,
+      // },
       {
         title: "Users",
         url: `${prefix}/users`,
