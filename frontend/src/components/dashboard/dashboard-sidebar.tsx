@@ -1,6 +1,5 @@
 "use client";
 
-import Logo from "@/assets/svg/Logo";
 import {
   Sidebar,
   SidebarContent,
@@ -19,6 +18,7 @@ import type { SidebarItems } from "@/types/sidebar.type";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { superAdminRoutes } from "@/routes/superAdmin.routes";
+import Image from "next/image";
 
 const sidebarRoutes: Partial<Record<UserRole, SidebarItems>> = {
   SUPER_ADMIN: superAdminRoutes,
@@ -35,10 +35,18 @@ export function DashboardSidebar({ role }: { role: UserRole }) {
     <Sidebar>
       <SidebarHeader>
         <Link href="/">
-          <div className="flex items-center gap-2">
-            <Logo />
+          {/* <div className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-1">
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={60}
+                height={60}
+                loading="eager"
+              />
+            </Link>
             <span>NovoSoft</span>
-          </div>
+          </div> */}
         </Link>
       </SidebarHeader>
       <SidebarContent>
