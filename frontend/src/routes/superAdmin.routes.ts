@@ -5,7 +5,7 @@ export const superAdminRoutes = [
     title: "Management",
     items: [
       {
-        title: "Overview",
+        title: "Dashboard",
         url: `${prefix}`,
       },
       {
