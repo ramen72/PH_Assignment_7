@@ -93,7 +93,7 @@ export default function AssetRequestForm() {
             title:"Asset request submitted successfully."
         })
 
-        router.push("/admin/asset-requests");
+        router.push("/employee/asset-requests");
         router.refresh();
       } catch (error) {
         const message =

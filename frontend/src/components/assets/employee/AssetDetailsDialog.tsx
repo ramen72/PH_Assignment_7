@@ -33,7 +33,6 @@ import { Button } from "@/components/ui/button";
 import { useGetAssetById } from "@/hooks";
 
 import type { Asset } from "@/types";
-import { Separator } from "../ui/separator";
 
 interface AssetDetailsDialogProps {
   assetId: string;
@@ -201,7 +200,7 @@ const AssetDetailsDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[92vh] overflow-y-auto p-0 sm:max-w-4xl">
         {/* HEADER */}
-        <DialogHeader className="relative overflow-hidden border-b bg-gradient-to-br from-primary/10 via-background to-blue-50/60 px-5 py-5 sm:px-7">
+        <DialogHeader className="relative overflow-hidden border-b bg-linear-to-br from-primary/10 via-background to-blue-50/60 px-5 py-5 sm:px-7">
           <div className="absolute -right-16 -top-16 size-40 rounded-full bg-primary/10 blur-2xl" />
 
           <div className="relative flex items-start gap-3">
@@ -271,7 +270,7 @@ const AssetDetailsDialog = ({
           <>
             <div className="space-y-6 p-4 sm:p-6">
               {/* HERO */}
-              <div className="overflow-hidden rounded-2xl border bg-gradient-to-br from-slate-50 via-background to-primary/5 shadow-sm">
+              <div className="overflow-hidden rounded-2xl border bg-linear-to-br from-slate-50 via-background to-primary/5 shadow-sm">
                 <div className="p-4 sm:p-5">
                   <div className="flex flex-col gap-5 sm:flex-row">
                     {/* IMAGE */}
@@ -285,7 +284,7 @@ const AssetDetailsDialog = ({
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/10 to-blue-100">
+                        <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-primary/10 to-blue-100">
                           <Package className="size-12 text-primary/50" />
                         </div>
                       )}
@@ -299,7 +298,7 @@ const AssetDetailsDialog = ({
                             Asset
                           </p>
 
-                          <h2 className="break-words text-2xl font-bold tracking-tight">
+                          <h2 className="wrap-break-words text-2xl font-bold tracking-tight">
                             {asset.name}
                           </h2>
 
@@ -472,7 +471,7 @@ const AssetDetailsDialog = ({
                   title="Assignment"
                   description="Current asset assignment"
                 >
-                  <div className="flex items-center gap-4 rounded-xl border bg-gradient-to-r from-blue-50/70 to-background p-4">
+                  <div className="flex items-center gap-4 rounded-xl border bg-linear-to-r from-blue-50/70 to-background p-4">
                     <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600">
                       <User className="size-5" />
                     </div>
@@ -519,7 +518,7 @@ const AssetDetailsDialog = ({
             </div>
 
             {/* FOOTER */}
-            <DialogFooter className="border-t-1 bg-muted/20 py-5 sm:px-6 mx-0">
+            <DialogFooter className="border-t bg-muted/20 py-5 sm:px-6 mx-0">
               <DialogClose
               render={<Button variant="outline">
                   Close
@@ -632,7 +631,7 @@ const InfoCard = ({
           </p>
 
           <p
-            className={`mt-1 break-words text-sm font-semibold ${
+            className={`mt-1 wrap-break-words text-sm font-semibold ${
               valueClassName || "text-foreground"
             }`}
           >

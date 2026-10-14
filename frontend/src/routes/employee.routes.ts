@@ -17,26 +17,22 @@ export const employeeRoutes = [
         url: `${prefix}/asset-categories`,
       },
       {
-        title: "Assignments",
-        url: `${prefix}/asset-assignments`,
-      },
-      {
         title: "Requests",
         url: `${prefix}/asset-requests`,
       },
     ],
   },
-  {
-    title: "Procurement & Finance",
-    items: [
-      {
-        title: "Purchases",
-        url: `${prefix}/asset-purchases`,
-      },
-      {
-        title: "Payments",
-        url: `${prefix}/payments`,
-      },
-    ],
-  },
+  // {
+  //   title: "Procurement & Finance",
+  //   items: [
+  //     {
+  //       title: "Purchases",
+  //       url: `${prefix}/asset-purchases`,
+  //     },
+  //     {
+  //       title: "Payments",
+  //       url: `${prefix}/payments`,
+  //     },
+  //   ],
+  // },
 ];
