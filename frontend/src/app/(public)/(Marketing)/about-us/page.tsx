@@ -42,7 +42,7 @@ export default function AboutUsPage() {
       <Header />
 
       <main className="min-h-screen bg-slate-50">
-        <section className="bg-gradient-to-br from-[#0d719e] to-[#124f70] px-5 py-20 text-white md:py-28">
+        <section className="bg-linear-to-br from-[#0d719e] to-[#124f70] px-5 py-20 text-white md:py-28">
           <div className="mx-auto max-w-6xl">
             <p className="font-semibold uppercase tracking-[0.2em] text-orange-200">
               About NovoSoft
@@ -55,15 +55,16 @@ export default function AboutUsPage() {
               employee requests, assignments, and maintenance
               workflows together in one organized platform.
             </p>
-            <Button
-              asChild
+            <Button              
               className="mt-8 bg-[#f15825] hover:bg-[#dc4819]"
-            >
-              <Link href="/contact">
+              nativeButton={false}
+              render={
+                <Link href="/contact">
                 Contact our team
                 <ArrowRight className="ml-2 size-4" />
               </Link>
-            </Button>
+              }
+            ></Button>
           </div>
         </section>
 
@@ -149,11 +150,12 @@ export default function AboutUsPage() {
               Get in touch to discuss your asset management needs.
             </p>
             <Button
-              asChild
               className="mt-7 bg-[#f15825] hover:bg-[#dc4819]"
-            >
-              <Link href="/contact">Get in touch</Link>
-            </Button>
+              nativeButton={false}
+              render={
+                <Link href="/contact">Get in touch</Link>
+              }
+            ></Button>
           </div>
         </section>
       </main>
