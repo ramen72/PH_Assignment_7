@@ -1,11 +1,11 @@
-const prefix = "/dashboard";
+const prefix = "/employee";
 
 export const employeeRoutes = [
   {
     title: "Management",
     items: [
       {
-        title: "Overview",
+        title: "Dashboard",
         url: `${prefix}`,
       },
       {
@@ -34,38 +34,8 @@ export const employeeRoutes = [
         url: `${prefix}/asset-purchases`,
       },
       {
-        title: "Vendors",
-        url: `${prefix}/vendors`,
-      },
-      {
         title: "Payments",
         url: `${prefix}/payments`,
-      },
-    ],
-  },
-  {
-    title: "Operations",
-    items: [
-      {
-        title: "Maintenance",
-        url: `${prefix}/maintenance-records`,
-      },
-      {
-        title: "Users",
-        url: `${prefix}/users`,
-      },
-    ],
-  },
-  {
-    title: "System & Logs",
-    items: [
-      {
-        title: "Audit Logs",
-        url: `${prefix}/audit-logs`,
-      },
-      {
-        title: "Notifications",
-        url: `${prefix}/notifications`,
       },
     ],
   },

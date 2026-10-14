@@ -6,7 +6,11 @@ export default function layout({ children }: { children: ReactNode }) {
   return (
     <RoleGuard roles={["EMPLOYEE", "SUPER_ADMIN"]}>
       {/* biome-ignore lint/a11y/useValidAriaRole: `role` is a component prop, not an ARIA role. */}
-      <DashboardShell role="EMPLOYEE">{children}</DashboardShell>
+      <DashboardShell role="EMPLOYEE">
+        <div className="p-2">
+          {children}
+        </div>
+      </DashboardShell>
     </RoleGuard>
   );
 }

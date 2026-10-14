@@ -25,7 +25,7 @@ const Header = () => {
     SUPER_ADMIN: "/super-admin",
     ADMIN: "/admin",
     MANAGER: "/manager",
-    EMPLOYEE: "/dashboard",
+    EMPLOYEE: "/employee",
   };
 
   const { data, isLoading } = useGetMe();
