@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Eye, EyeClosed } from "lucide-react";
+import { Eye, EyeClosed, ShieldCheck, User } from "lucide-react";
 import { useForm } from "@tanstack/react-form";
 import { LoginZodSchema } from "@/validation/auth.validation";
 import { Button } from "../ui/button";
@@ -19,57 +19,83 @@ import { toast } from "../ui/toast";
 import { Spinner } from "../ui/spinner";
 import GoogleLoginComponent from "../modules/google-login/GoogleLogin";
 
+type LoginPayload = { email: string; password: string };
+
+// One-click demo accounts
+const QUICK_LOGINS = [
+  {
+    key: "superadmin",
+    label: "Super Admin",
+    icon: ShieldCheck,
+    credentials: { email: "superadmin@gmail.com", password: "Super@admin321" },
+  },
+  {
+    key: "employee",
+    label: "Employee",
+    icon: User,
+    credentials: { email: "employee@gmail.com", password: "Super@admin321" },
+  },
+] as const;
+
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  // which quick-login button is currently loading
+  const [activeQuickLogin, setActiveQuickLogin] = useState<string | null>(null);
   const router = useRouter();
 
   const { mutate: login, isPending: loginPending } = useLogin();
 
+  const handleLogin = (loginData: LoginPayload) => {
+    login(loginData, {
+      onSuccess: (res) => {
+        toast.add({
+          title: "Login Success",
+          description: res.message,
+          type: "Success",
+        });
+        router.push("/");
+      },
+      onError: (error) => {
+        console.log(error);
+        const errorMessage =
+          typeof error === "object" &&
+          error !== null &&
+          "data" in error &&
+          typeof error.data === "object" &&
+          error.data !== null &&
+          "message" in error.data &&
+          typeof error.data.message === "string"
+            ? error.data.message
+            : error instanceof Error
+              ? error.message
+              : "Failed to Login due to authentication.";
+        toast.add({
+          type: "error",
+          title: errorMessage,
+        });
+      },
+      onSettled: () => setActiveQuickLogin(null),
+    });
+  };
+
+  const handleQuickLogin = (key: string, credentials: LoginPayload) => {
+    setActiveQuickLogin(key);
+    // keep the form fields in sync so the user sees who is logging in
+    form.setFieldValue("email", credentials.email);
+    form.setFieldValue("password", credentials.password);
+    handleLogin(credentials);
+  };
+
   const form = useForm({
     defaultValues: {
-      // email: "superadmin@gmail.com",
-      // email:"admin@gmail.com",
-      // email: "ramentusuka@gmail.com",
-      email: "employee@gmail.com",
-      password: "Super@admin321",
+      email: "",
+      password: "",
     },
     validators: {
       onSubmit: LoginZodSchema,
     },
     onSubmit: ({ value }) => {
-      const loginData = {
-        email: value.email,
-        password: value.password,
-      };
-      login(loginData, {
-        onSuccess: (res) => {
-          toast.add({
-            title: "Login Success",
-            description: res.message,
-            type: "Success",
-          });
-          router.push("/");
-        },
-        onError: (error) => {
-          console.log(error);
-          const errorMessage =
-            typeof error === "object" &&
-              error !== null &&
-              "data" in error &&
-              typeof error.data === "object" &&
-              error.data !== null &&
-              "message" in error.data &&
-              typeof error.data.message === "string"
-              ? error.data.message
-              : error instanceof Error
-                ? error.message
-                : "Failed to Login due to authentication.";
-          toast.add({
-            type: "error",
-            title: errorMessage,
-          });
-        },
-      });
+      handleLogin({ email: value.email, password: value.password });
     },
   });
 
@@ -79,13 +105,10 @@ const LoginForm = () => {
       <div className="flex flex-col gap-5">
         <div className="bg-linear-to-r from-[#d1edf9] to-[#dde4f7] flex flex-col items-center gap-2 text-center py-4">
           <h1 className="text-2xl font-bold tracking-tight">
-            {" "}
             Login to your Account
           </h1>
-          {/* <p className="text-balance text-sm text-muted-foreground">
-            Enter your email and password below to login
-          </p> */}
         </div>
+
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -105,6 +128,7 @@ const LoginForm = () => {
                     <Input
                       id={field.name}
                       name={field.name}
+                      placeholder={"example@mail.com"}
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
                       value={field.state.value}
@@ -131,6 +155,7 @@ const LoginForm = () => {
                         id={field.name}
                         type={showPassword ? "text" : "password"}
                         name={field.name}
+                        placeholder={"**************"}
                         onChange={(e) => field.handleChange(e.target.value)}
                         onBlur={field.handleBlur}
                         value={field.state.value}
@@ -158,7 +183,7 @@ const LoginForm = () => {
             </form.Field>
 
             <Button disabled={loginPending} type="submit">
-              {loginPending ? (
+              {loginPending && !activeQuickLogin ? (
                 <>
                   <Spinner /> Submitting
                 </>
@@ -168,13 +193,37 @@ const LoginForm = () => {
             </Button>
           </FieldGroup>
         </form>
-        <div className="px-5">
-        <FieldSeparator>Or continue with</FieldSeparator>
-        </div>         
-        <div className="px-5">
-        <GoogleLoginComponent />
-        </div>         
 
+        {/* One-click login */}
+        <div className="px-5">
+          <FieldSeparator>Quick login</FieldSeparator>
+        </div>
+        <div className="px-5 grid grid-cols-2 gap-3">
+          {QUICK_LOGINS.map(({ key, label, icon: Icon, credentials }) => (
+            <Button
+              key={key}
+              type="button"
+              variant="outline"
+              disabled={loginPending}
+              onClick={() => handleQuickLogin(key, credentials)}
+              className="h-10 gap-2 border-[#1a7eca]/40 hover:bg-[#d1edf9]"
+            >
+              {activeQuickLogin === key ? (
+                <Spinner />
+              ) : (
+                <Icon className="size-4" />
+              )}
+              {label}
+            </Button>
+          ))}
+        </div>
+
+        <div className="px-5">
+          <FieldSeparator>Or continue with</FieldSeparator>
+        </div>
+        <div className="px-5">
+          <GoogleLoginComponent />
+        </div>
 
         <div className="text-center text-sm text-muted-foreground px-5 pb-5">
           Don&apos;t have an account?{" "}
@@ -185,13 +234,6 @@ const LoginForm = () => {
             Register
           </Link>
         </div>
-        {/* // <GoogleLogin
-      //   theme="outline"
-      //   shape="pill"
-      //   text="continue_with"
-      //   onSuccess={handleGoogleSuccess}
-      //   onError={handleGoogleError}
-      // /> */}
       </div>
     </div>
   );
